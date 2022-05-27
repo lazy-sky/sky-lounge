@@ -1,3 +1,7 @@
+@import '/src/styles/index';
+
 .postsFeed {
+  @include heading1;
+  color: $PRIMARY01;
   border: 1px solid pink;
 }
