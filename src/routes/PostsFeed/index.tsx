@@ -39,13 +39,13 @@ const PostsFeed = () => {
     const targetRef = doc(myDb, 'posts', postId)
     const targetDoc = await getDoc(targetRef)
 
-    if (targetDoc.data()?.like.includes(postId)) {
+    if (targetDoc.data()?.like.includes(currentUser?.uid)) {
       await updateDoc(targetRef, {
-        like: arrayUnion(currentUser?.uid),
+        like: arrayRemove(currentUser?.uid),
       })
     } else {
       await updateDoc(targetRef, {
-        like: arrayRemove(currentUser?.uid),
+        like: arrayUnion(currentUser?.uid),
       })
     }
   }
