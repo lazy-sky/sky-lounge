@@ -68,7 +68,7 @@ const PostsFeed = () => {
                 <div className={styles.user}>{post.userName}</div>
                 <div className={styles.createdAt}>{post.createdAt}</div>
               </div>
-              <OptionsIcon />
+              {post.userId === currentUser?.uid && <OptionsIcon />}
             </div>
             <div className={styles.content}>
               <p className={styles.contentText}>{post.content.text}</p>
