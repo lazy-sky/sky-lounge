@@ -1,7 +1,11 @@
 import { Link } from 'react-router-dom'
-import { User } from 'firebase/auth'
+import { useRecoilValue } from 'recoil'
 
-const Navigation = ({ currentUser }: { currentUser: User | null }) => {
+import { currentUserState } from 'store/atom'
+
+const Navigation = () => {
+  const currentUser = useRecoilValue(currentUserState)
+
   return (
     <nav style={{ border: '2px solid gray', position: 'sticky', top: 0 }}>
       <ul style={{ display: 'flex', gap: '20px' }}>
@@ -9,7 +13,9 @@ const Navigation = ({ currentUser }: { currentUser: User | null }) => {
           <Link to='/'>Home</Link>
         </li>
         <li>
-          <Link to='profile'>{`${currentUser?.displayName}의 Profile`}</Link>
+          <Link to='profile'>
+            <img src={String(currentUser?.photoURL)} alt='profile' />
+          </Link>
         </li>
         <li>
           <Link to='auth'>회원가입/로그인</Link>

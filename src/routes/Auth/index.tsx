@@ -3,9 +3,12 @@ import { useNavigate } from 'react-router-dom'
 import { signInWithPopup, GoogleAuthProvider, GithubAuthProvider, signOut } from 'firebase/auth'
 
 import { auth } from 'myFirebase'
+import { useRecoilValue } from 'recoil'
+import { isLoggedInState } from 'store/atom'
 
-const Auth = ({ isLoggedIn }: { isLoggedIn: boolean }) => {
+const Auth = () => {
   const navigate = useNavigate()
+  const isLoggedIn = useRecoilValue(isLoggedInState)
 
   const handleSocialClick = async (event: MouseEvent<HTMLButtonElement>) => {
     const {

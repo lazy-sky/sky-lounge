@@ -1,17 +1,15 @@
-import { useState, ChangeEvent, FormEvent, Dispatch, SetStateAction } from 'react'
+import { useState, ChangeEvent, FormEvent } from 'react'
 import { useNavigate } from 'react-router-dom'
+import { useRecoilState } from 'recoil'
 import { signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
 import { auth } from 'myFirebase'
+import { currentUserState } from 'store/atom'
 
-interface IProfile {
-  currentUser: User | null
-  setCurrentUser: Dispatch<SetStateAction<User | null>>
-}
-
-const Profile = ({ currentUser, setCurrentUser }: IProfile) => {
+const Profile = () => {
   const navigate = useNavigate()
+  const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
   const [newDisplayName, setNewDisplayname] = useState(currentUser?.displayName)
 
   const handleDisplayNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -35,7 +33,7 @@ const Profile = ({ currentUser, setCurrentUser }: IProfile) => {
 
   return (
     <div>
-      <img src={String(currentUser?.photoURL)} alt='dd' />
+      <img src={String(currentUser?.photoURL)} alt='user profile' />
       <form onSubmit={handleSubmit}>
         닉네임:
         <input

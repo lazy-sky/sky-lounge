@@ -1,11 +1,12 @@
-import { useState, useEffect } from 'react'
 import { Routes, Route } from 'react-router-dom'
-import { RecoilRoot } from 'recoil'
+import { useSetRecoilState } from 'recoil'
 import { QueryClientProvider, QueryClient } from 'react-query'
-import { onAuthStateChanged, User } from 'firebase/auth'
+import { useMount } from 'react-use'
+import { onAuthStateChanged } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
 import { auth } from 'myFirebase'
+import { currentUserState, isLoggedInState } from 'store/atom'
 import Navigation from 'components/Navigation'
 import Auth from './Auth'
 import PostsFeed from './PostsFeed'
@@ -13,21 +14,17 @@ import Profile from './Profile'
 
 const App = () => {
   const queryClient = new QueryClient()
-  // TODO: 전역 상태로 변경
-  const [isLoggedIn, setIsLoggedIn] = useState(false)
-  const [currentUser, setCurrentUser] = useState<User | null>(null)
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState)
+  const setCurrentUser = useSetRecoilState(currentUserState)
 
-  useEffect(() => {
+  useMount(() => {
     onAuthStateChanged(auth, (user) => {
-      if (!user) {
-        setIsLoggedIn(false)
-        return
-      }
+      if (!user) return
 
       setIsLoggedIn(true)
       setCurrentUser(cloneDeep(auth.currentUser))
     })
-  }, [])
+  })
 
   // TODO: route
   // - 자유 포스트방:
@@ -38,18 +35,14 @@ const App = () => {
   // - 회원가입 및 로그인
 
   return (
-    <>
-      <Navigation currentUser={currentUser} />
-      <RecoilRoot>
-        <QueryClientProvider client={queryClient}>
-          <Routes>
-            <Route path='/' element={<PostsFeed />} />
-            <Route path='auth' element={<Auth isLoggedIn={isLoggedIn} />} />
-            <Route path='profile' element={<Profile currentUser={currentUser} setCurrentUser={setCurrentUser} />} />
-          </Routes>
-        </QueryClientProvider>
-      </RecoilRoot>
-    </>
+    <QueryClientProvider client={queryClient}>
+      <Navigation />
+      <Routes>
+        <Route path='/' element={<PostsFeed />} />
+        <Route path='auth' element={<Auth />} />
+        <Route path='profile' element={<Profile />} />
+      </Routes>
+    </QueryClientProvider>
   )
 }
 
