@@ -1,25 +1,30 @@
+import { useEffect, useState } from 'react'
+import { useRecoilValue } from 'recoil'
+import { collection, doc, getDocs, query, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore'
+
+import { myDb } from 'myFirebase'
+import { currentUserState } from 'store/atom'
+import { IPost } from 'types/post'
+import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
+
 import styles from './postsFeed.module.scss'
 import noimage from './noimage.jpg'
-import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
-import { myDb } from 'myFirebase'
-import { collection, getDocs, query } from 'firebase/firestore'
-import { useEffect, useState } from 'react'
-import { IPost } from 'types/post'
 
 const PostsFeed = () => {
+  const currentUser = useRecoilValue(currentUserState)
   // TODO: react query로 관리
   const [posts, setPosts] = useState<IPost[]>([])
 
   const getPosts = async () => {
     const q = query(collection(myDb, 'posts'))
     const querySnapshot = await getDocs(q)
-    querySnapshot.forEach((doc) => {
+    querySnapshot.forEach((currentDoc) => {
       setPosts((prev) => [
-        {
-          ...doc.data(),
-          id: doc.id,
-        } as IPost,
         ...prev,
+        {
+          ...currentDoc.data(),
+          id: currentDoc.id,
+        } as IPost,
       ])
     })
   }
@@ -27,6 +32,23 @@ const PostsFeed = () => {
   useEffect(() => {
     getPosts()
   }, [])
+
+  // TODO: 디바운싱
+  // TODO: Optimistic UI
+  const handleLikeToggle = async (postId: string) => {
+    const targetRef = doc(myDb, 'posts', postId)
+    const targetDoc = await getDoc(targetRef)
+
+    if (targetDoc.data()?.like.includes(postId)) {
+      await updateDoc(targetRef, {
+        like: arrayUnion(currentUser?.uid),
+      })
+    } else {
+      await updateDoc(targetRef, {
+        like: arrayRemove(currentUser?.uid),
+      })
+    }
+  }
 
   return (
     <div className={styles.postsFeed}>
@@ -53,11 +75,13 @@ const PostsFeed = () => {
               {post.content.imgSrc && <img src={post.content.imgSrc || noimage} alt={String(post.id)} />}
             </div>
             <div className={styles.postFooter}>
-              {/* TODO: 서버 정보로 교체 */}
-              <div>{post.like?.users.includes('myid') ? <LikePressedIcon /> : <LikeUnpressedIcon />}</div>
-              <div>{post.like?.count}</div>
+              <button type='button' onClick={() => handleLikeToggle(post.id)}>
+                {post.like?.includes(currentUser?.uid || '') ? <LikePressedIcon /> : <LikeUnpressedIcon />}
+              </button>
+              <div>{post.like?.length || 0}</div>
               <CommentIcon />
-              <div>{post.comments?.count}</div>
+              {/* TODO: 서버 정보로 교체 */}
+              <div>{post.comments?.length || 0}</div>
             </div>
           </li>
         ))}

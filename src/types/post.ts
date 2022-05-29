@@ -1,5 +1,6 @@
 export interface IPost {
   id: string
+  userId: string
   userName: string
   createdAt: string
   content: {
@@ -7,15 +8,9 @@ export interface IPost {
     imgSrc?: string
   }
   tags?: string[]
-  like?: {
-    count: number
-    users: string[]
-  }
+  like?: string[]
   comments?: {
-    count: number
-    contents: {
-      user: string
-      text: string
-    }
-  }
+    user: string
+    text: string
+  }[]
 }

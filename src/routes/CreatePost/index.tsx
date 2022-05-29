@@ -1,10 +1,10 @@
 import { ChangeEvent, FormEvent, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useRecoilValue } from 'recoil'
 import { addDoc, collection } from 'firebase/firestore'
 
 import { myDb } from 'myFirebase'
-import { useRecoilValue } from 'recoil'
 import { currentUserState } from 'store/atom'
-import { useNavigate } from 'react-router-dom'
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -44,10 +44,13 @@ const CreatePost = () => {
     if (text === '') return
 
     await addDoc(collection(myDb, 'posts'), {
+      userId: currentUser?.uid,
       userName: currentUser?.displayName,
       createdAt: String(new Date()),
       content: { text, imgSrc },
       tags,
+      like: [],
+      comment: [],
     })
 
     setText('')
