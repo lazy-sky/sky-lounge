@@ -11,6 +11,7 @@ import Navigation from 'components/Navigation'
 import PostsFeed from './PostsFeed'
 import Profile from './Profile'
 import CreatePost from './CreatePost'
+import PrivateRoute from './PrivateRoute'
 
 const App = () => {
   const queryClient = new QueryClient()
@@ -31,7 +32,6 @@ const App = () => {
   // - 모임 공지, 스터디 등
   // - 건의사항:
   // - 테스트
-  // - 회원가입 및 로그인
 
   return (
     <QueryClientProvider client={queryClient}>
@@ -39,7 +39,14 @@ const App = () => {
       <Routes>
         <Route path='/' element={<PostsFeed />} />
         <Route path='profile' element={<Profile />} />
-        <Route path='write' element={<CreatePost />} />
+        <Route
+          path='/write/*'
+          element={
+            <PrivateRoute>
+              <CreatePost />
+            </PrivateRoute>
+          }
+        />
       </Routes>
     </QueryClientProvider>
   )
