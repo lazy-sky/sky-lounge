@@ -76,7 +76,7 @@ const Profile = () => {
           </button>
         </>
       ) : (
-        <div>
+        <div style={{ display: 'flex', gap: '20px' }}>
           <button type='button' name='google' onClick={handleSocialLoginClick}>
             Continue with Google
           </button>

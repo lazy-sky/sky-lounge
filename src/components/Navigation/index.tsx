@@ -14,8 +14,11 @@ const Navigation = () => {
         </li>
         <li>
           <Link to='profile'>
-            <img src={String(currentUser?.photoURL)} alt='profile' />
+            <img src={String(currentUser?.photoURL)} alt='profile' width='50' />
           </Link>
+        </li>
+        <li>
+          <Link to='write'>새 글 작성</Link>
         </li>
       </ul>
     </nav>
