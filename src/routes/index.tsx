@@ -8,10 +8,10 @@ import { cloneDeep } from 'lodash'
 import { auth } from 'myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import Navigation from 'components/Navigation'
-import PostsFeed from './PostsFeed'
 import Profile from './Profile'
 import CreatePost from './CreatePost'
 import PrivateRoute from './PrivateRoute'
+import Home from './Home'
 
 const App = () => {
   const queryClient = new QueryClient()
@@ -38,7 +38,7 @@ const App = () => {
     <QueryClientProvider client={queryClient}>
       <Navigation />
       <Routes>
-        <Route path='/' element={<PostsFeed />} />
+        <Route path='/' element={<Home />} />
         <Route path='profile' element={<Profile />} />
         <Route
           path='/write/*'
