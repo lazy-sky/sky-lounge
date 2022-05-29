@@ -17,9 +17,6 @@ const Navigation = () => {
             <img src={String(currentUser?.photoURL)} alt='profile' />
           </Link>
         </li>
-        <li>
-          <Link to='auth'>회원가입/로그인</Link>
-        </li>
       </ul>
     </nav>
   )

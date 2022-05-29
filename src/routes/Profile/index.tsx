@@ -1,16 +1,38 @@
-import { useState, ChangeEvent, FormEvent } from 'react'
+import { useState, ChangeEvent, FormEvent, MouseEvent, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
-import { signOut, updateProfile, User } from 'firebase/auth'
+import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
 import { auth } from 'myFirebase'
-import { currentUserState } from 'store/atom'
+import { currentUserState, isLoggedInState } from 'store/atom'
 
 const Profile = () => {
   const navigate = useNavigate()
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
-  const [newDisplayName, setNewDisplayname] = useState(currentUser?.displayName)
+  // TODO: 랜덤 닉네임 생성
+  const [newDisplayName, setNewDisplayname] = useState(currentUser?.displayName || '')
+
+  useEffect(() => {
+    setNewDisplayname(currentUser?.displayName || '')
+  }, [currentUser])
+
+  const handleSocialLoginClick = async (event: MouseEvent<HTMLButtonElement>) => {
+    const {
+      currentTarget: { name },
+    } = event
+
+    if (name === 'google') {
+      await signInWithPopup(auth, new GoogleAuthProvider())
+    }
+
+    if (name === 'github') {
+      await signInWithPopup(auth, new GithubAuthProvider())
+    }
+
+    setCurrentUser(cloneDeep(auth.currentUser))
+  }
 
   const handleDisplayNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNewDisplayname(event.target.value)
@@ -23,30 +45,46 @@ const Profile = () => {
     await updateProfile(auth.currentUser as User, {
       displayName: newDisplayName,
     })
+
     setCurrentUser(cloneDeep(auth.currentUser))
   }
 
   const handleLogOutClick = () => {
+    setIsLoggedIn(false)
+    setCurrentUser(null)
     signOut(auth)
     navigate('/')
   }
 
   return (
     <div>
-      <img src={String(currentUser?.photoURL)} alt='user profile' />
-      <form onSubmit={handleSubmit}>
-        닉네임:
-        <input
-          type='text'
-          placeholder='닉네임을 입력해주세요'
-          value={newDisplayName || ''}
-          onChange={handleDisplayNameChange}
-        />
-        <button type='submit'>변경</button>
-      </form>
-      <button type='button' onClick={handleLogOutClick}>
-        로그아웃
-      </button>
+      {isLoggedIn ? (
+        <>
+          <img src={String(currentUser?.photoURL)} alt='user profile' />
+          <form onSubmit={handleSubmit}>
+            닉네임:
+            <input
+              type='text'
+              placeholder='닉네임을 입력해주세요'
+              value={newDisplayName}
+              onChange={handleDisplayNameChange}
+            />
+            <button type='submit'>변경</button>
+          </form>
+          <button type='button' onClick={handleLogOutClick}>
+            Log Out
+          </button>
+        </>
+      ) : (
+        <div>
+          <button type='button' name='google' onClick={handleSocialLoginClick}>
+            Continue with Google
+          </button>
+          <button type='button' name='github' onClick={handleSocialLoginClick}>
+            Continue with Github
+          </button>
+        </div>
+      )}
     </div>
   )
 }

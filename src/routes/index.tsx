@@ -8,7 +8,6 @@ import { cloneDeep } from 'lodash'
 import { auth } from 'myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import Navigation from 'components/Navigation'
-import Auth from './Auth'
 import PostsFeed from './PostsFeed'
 import Profile from './Profile'
 
@@ -39,7 +38,6 @@ const App = () => {
       <Navigation />
       <Routes>
         <Route path='/' element={<PostsFeed />} />
-        <Route path='auth' element={<Auth />} />
         <Route path='profile' element={<Profile />} />
       </Routes>
     </QueryClientProvider>
