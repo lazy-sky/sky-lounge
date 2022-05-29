@@ -1,0 +1,19 @@
+@import '/src/styles/index';
+
+.tags {
+  display: flex;
+  gap: 8px;
+
+  .tag {
+    @include body4;
+    padding: 4px 16px;
+    background-color: $SURFACE;
+    border: 1px solid $BODY03;
+    border-radius: 16px;
+
+    &.active {
+      background-color: $BLUE03;
+      border-color: $BLUE03;
+    }
+  }
+}

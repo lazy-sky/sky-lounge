@@ -2,16 +2,21 @@ import { ChangeEvent, FormEvent, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { addDoc, collection } from 'firebase/firestore'
+import cx from 'classnames'
 
 import { myDb } from 'myFirebase'
 import { currentUserState } from 'store/atom'
 
+import styles from './createPost.module.scss'
+
+// TODO: 수정 모드 추가
 const CreatePost = () => {
   const navigate = useNavigate()
   const currentUser = useRecoilValue(currentUserState)
   const [text, setText] = useState('')
   const [imgSrc, setImgSrc] = useState('')
-  const [tags, setTags] = useState<string[]>([])
+  const tags = ['태그1', '태그2', '태그3', '태그4', '태그5']
+  const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value)
@@ -30,12 +35,12 @@ const CreatePost = () => {
   const handleFileClear = () => setImgSrc('')
 
   const handleTagClick = (tag: string) => {
-    if (tags.includes(tag)) {
-      setTags(tags.filter((prev) => prev !== tag))
+    if (selectedTags.includes(tag)) {
+      setSelectedTags(selectedTags.filter((prev) => prev !== tag))
       return
     }
 
-    setTags((prev) => [...prev, tag])
+    setSelectedTags((prev) => [...prev, tag])
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -48,7 +53,7 @@ const CreatePost = () => {
       userName: currentUser?.displayName,
       createdAt: String(new Date()),
       content: { text, imgSrc },
-      tags,
+      tags: selectedTags,
       like: [],
       comment: [],
     })
@@ -59,9 +64,9 @@ const CreatePost = () => {
 
   return (
     <div>
-      <ul style={{ display: 'flex', gap: '10px' }}>
-        {['tag1', 'tag2', 'tag3', 'tag4', 'tag5'].map((tag) => (
-          <li key={tag}>
+      <ul className={styles.tags}>
+        {tags.map((tag) => (
+          <li key={tag} className={cx(styles.tag, selectedTags.includes(tag) && styles.active)}>
             <button type='button' onClick={() => handleTagClick(tag)}>
               {tag}
             </button>
