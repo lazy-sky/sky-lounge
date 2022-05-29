@@ -1,19 +1,14 @@
 import { useEffect, useState } from 'react'
-import { useRecoilValue } from 'recoil'
-import { collection, doc, getDocs, query, updateDoc, arrayUnion, arrayRemove, getDoc } from 'firebase/firestore'
+import { collection, getDocs, query } from 'firebase/firestore'
 
 import { myDb } from 'myFirebase'
-import { currentUserState } from 'store/atom'
 import { IPost } from 'types/post'
-import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
 
 import styles from './postsFeed.module.scss'
-import noimage from './noimage.jpg'
-import Comments from './Comments'
+
+import Post from './Post'
 
 const PostsFeed = () => {
-  const currentUser = useRecoilValue(currentUserState)
-
   // TODO: react query로 관리
   const [posts, setPosts] = useState<IPost[]>([])
 
@@ -35,57 +30,12 @@ const PostsFeed = () => {
     getPosts()
   }, [])
 
-  // TODO: 디바운싱
-  // TODO: Optimistic UI
-  const handleLikeToggle = async (postId: string) => {
-    const targetRef = doc(myDb, 'posts', postId)
-    const targetDoc = await getDoc(targetRef)
-
-    if (targetDoc.data()?.like.includes(currentUser?.uid)) {
-      await updateDoc(targetRef, {
-        like: arrayRemove(currentUser?.uid),
-      })
-    } else {
-      await updateDoc(targetRef, {
-        like: arrayUnion(currentUser?.uid),
-      })
-    }
-  }
-
   return (
     <div className={styles.postsFeed}>
       <h1>아무말 저장소</h1>
       <ul className={styles.postList}>
         {posts.map((post) => (
-          <li key={post.id} className={styles.post}>
-            <ul className={styles.tags}>
-              {post.tags?.map((tag) => (
-                <li key={tag} className={styles.tag}>
-                  {tag}
-                </li>
-              ))}
-            </ul>
-            <div className={styles.metaInfo}>
-              <div>
-                <div className={styles.user}>{post.userName}</div>
-                <div className={styles.createdAt}>{post.createdAt}</div>
-              </div>
-              {post.userId === currentUser?.uid && <OptionsIcon />}
-            </div>
-            <div className={styles.content}>
-              <p className={styles.contentText}>{post.content.text}</p>
-              {post.content.imgSrc && <img src={post.content.imgSrc || noimage} alt={String(post.id)} />}
-            </div>
-            <div className={styles.postFooter}>
-              <button type='button' onClick={() => handleLikeToggle(post.id)}>
-                {post.like?.includes(currentUser?.uid || '') ? <LikePressedIcon /> : <LikeUnpressedIcon />}
-              </button>
-              <div>{post.like?.length || 0}</div>
-              <CommentIcon />
-              <div>{post.comments?.length || 0}</div>
-              <Comments post={post} />
-            </div>
-          </li>
+          <Post key={post.id} post={post} />
         ))}
       </ul>
     </div>

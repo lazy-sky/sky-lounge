@@ -1,0 +1,62 @@
+@import '/src/styles/index';
+
+.post {
+  padding: 20px;
+  margin-bottom: 12px;
+  background-color: $BACKGROUND;
+
+  &:first-child {
+    margin-top: 12px;
+  }
+
+  .tags {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 12px;
+
+    .tag {
+      @include flag;
+      padding: 4px 16px;
+      color: $BODY01;
+      background-color: $SURFACE;
+      border-radius: 12px;
+    }
+  }
+
+  .metaInfo {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .user {
+    @include body3;
+    color: $TITLE02;
+  }
+
+  .createdAt {
+    @include body8;
+    color: $BODY02;
+  }
+
+  .content {
+    @include body7;
+    margin-bottom: 20px;
+    color: $TITLE02;
+
+    &Text {
+      margin-bottom: 16px;
+    }
+
+    img {
+      width: 100%;
+    }
+  }
+
+  &Footer {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    justify-content: flex-end;
+  }
+}
