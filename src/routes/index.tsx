@@ -10,6 +10,7 @@ import { currentUserState, isLoggedInState } from 'store/atom'
 import Navigation from 'components/Navigation'
 import PostsFeed from './PostsFeed'
 import Profile from './Profile'
+import CreatePost from './CreatePost'
 
 const App = () => {
   const queryClient = new QueryClient()
@@ -39,6 +40,7 @@ const App = () => {
       <Routes>
         <Route path='/' element={<PostsFeed />} />
         <Route path='profile' element={<Profile />} />
+        <Route path='write' element={<CreatePost />} />
       </Routes>
     </QueryClientProvider>
   )
