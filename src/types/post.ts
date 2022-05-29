@@ -10,6 +10,7 @@ export interface IPost {
   tags?: string[]
   like?: string[]
   comments?: {
+    id: string
     user: string
     text: string
   }[]

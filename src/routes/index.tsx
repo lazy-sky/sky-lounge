@@ -32,6 +32,7 @@ const App = () => {
   // - 모임 공지, 스터디 등
   // - 건의사항:
   // - 테스트
+  // - 챌린지 및 인증
 
   return (
     <QueryClientProvider client={queryClient}>

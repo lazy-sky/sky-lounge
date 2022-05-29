@@ -9,9 +9,11 @@ import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'as
 
 import styles from './postsFeed.module.scss'
 import noimage from './noimage.jpg'
+import Comments from './Comments'
 
 const PostsFeed = () => {
   const currentUser = useRecoilValue(currentUserState)
+
   // TODO: react query로 관리
   const [posts, setPosts] = useState<IPost[]>([])
 
@@ -80,8 +82,8 @@ const PostsFeed = () => {
               </button>
               <div>{post.like?.length || 0}</div>
               <CommentIcon />
-              {/* TODO: 서버 정보로 교체 */}
               <div>{post.comments?.length || 0}</div>
+              <Comments post={post} />
             </div>
           </li>
         ))}
