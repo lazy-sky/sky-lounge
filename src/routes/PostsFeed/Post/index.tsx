@@ -1,15 +1,19 @@
-import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
+import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
+import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
+
 import { currentUserState } from 'store/atom'
 import { IPost } from 'types/post'
+import { myDb } from 'myFirebase'
+import Comments from '../Comments'
+import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
+
 import styles from './post.module.scss'
 import noimage from './noimage.jpg'
-import Comments from '../Comments'
-import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
-import { myDb } from 'myFirebase'
 
 const Post = ({ post }: { post: IPost }) => {
   const currentUser = useRecoilValue(currentUserState)
+  const [commentsView, setCommentsView] = useState(false)
 
   // TODO: 디바운싱
   // TODO: Optimistic UI
@@ -26,6 +30,10 @@ const Post = ({ post }: { post: IPost }) => {
         like: arrayUnion(currentUser?.uid),
       })
     }
+  }
+
+  const handleCommentsView = () => {
+    setCommentsView((prev) => !prev)
   }
 
   return (
@@ -53,9 +61,11 @@ const Post = ({ post }: { post: IPost }) => {
           {post.like?.includes(currentUser?.uid || '') ? <LikePressedIcon /> : <LikeUnpressedIcon />}
         </button>
         <div>{post.like?.length || 0}</div>
-        <CommentIcon />
+        <button type='button' onClick={handleCommentsView}>
+          <CommentIcon />
+        </button>
         <div>{post.comments?.length || 0}</div>
-        <Comments post={post} />
+        {commentsView && <Comments post={post} />}
       </div>
     </li>
   )
