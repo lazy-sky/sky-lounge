@@ -1,1 +1,20 @@
 @use 'styles/constants/colors';
+
+$MAIN_WIDTH: 468px;
+$FOOTER_HEIGHT: 56px;
+
+.container {
+  max-width: $MAIN_WIDTH;
+  min-height: calc(100vh - $FOOTER_HEIGHT);
+  margin: 10px auto 0;
+}
+
+footer {
+  position: sticky;
+  bottom: 0;
+  left: calc((100vw - $MAIN_WIDTH) / 2);
+  max-width: $MAIN_WIDTH;
+  height: $FOOTER_HEIGHT;
+  background-color: colors.$WHITE;
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 10%);
+}

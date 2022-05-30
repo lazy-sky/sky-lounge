@@ -1,24 +1,31 @@
+import { ChatIcon, HomeIcon, PencilIcon, UserIcon } from 'assets/svgs'
 import { Link } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
 
-import { currentUserState } from 'store/atom'
+import styles from './navigation.module.scss'
 
 const Navigation = () => {
-  const currentUser = useRecoilValue(currentUserState)
-
   return (
-    <nav style={{ border: '2px solid gray', position: 'sticky', top: 0 }}>
-      <ul style={{ display: 'flex', gap: '20px' }}>
+    <nav className={styles.navigation}>
+      <ul>
         <li>
-          <Link to='/'>Home</Link>
-        </li>
-        <li>
-          <Link to='profile'>
-            <img src={String(currentUser?.photoURL)} alt='profile' width='50' />
+          <Link to='/'>
+            <HomeIcon />
           </Link>
         </li>
         <li>
-          <Link to='write'>새 글 작성</Link>
+          <Link to='write'>
+            <PencilIcon />
+          </Link>
+        </li>
+        <li>
+          <Link to='chat'>
+            <ChatIcon />
+          </Link>
+        </li>
+        <li>
+          <Link to='profile'>
+            <UserIcon />
+          </Link>
         </li>
       </ul>
     </nav>
