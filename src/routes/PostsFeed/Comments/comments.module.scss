@@ -17,7 +17,8 @@
     gap: 8px;
 
     input {
-      padding: 4px 8px;
+      @include body8;
+      padding: 6px 12px;
       color: $TITLE02;
       background-color: $LINE03;
       border-radius: 4px;
@@ -35,6 +36,7 @@
 
 .commentList {
   li {
+    @include body8;
     padding: 16px 0;
 
     .commenter {
