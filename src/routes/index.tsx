@@ -14,6 +14,7 @@ import PrivateRoute from './PrivateRoute'
 import Home from './Home'
 
 import styles from './routes.module.scss'
+import Chat from './Chat'
 
 const App = () => {
   const queryClient = new QueryClient()
@@ -55,6 +56,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
+          <Route path='chat' element={<Chat />} />
         </Routes>
       </div>
       <footer>

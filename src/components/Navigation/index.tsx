@@ -1,15 +1,13 @@
-import { ChatIcon, HomeIcon, PencilIcon, UserIcon } from 'assets/svgs'
 import { Link, useLocation } from 'react-router-dom'
-import { useRecoilValue } from 'recoil'
 import cx from 'classnames'
-import { isLoggedInState } from 'store/atom'
+
+import { ChatIcon, HomeIcon, PencilIcon, UserIcon } from 'assets/svgs'
 
 import styles from './navigation.module.scss'
 
 const Navigation = () => {
   const location = useLocation()
   const { pathname } = location
-  const isLoggedIn = useRecoilValue(isLoggedInState)
 
   const checkIsActive = (path: string) => {
     return path === pathname
