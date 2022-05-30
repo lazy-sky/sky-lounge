@@ -6,6 +6,8 @@ import { myDb } from 'myFirebase'
 import { currentUserState } from 'store/atom'
 import { IPost } from 'types/post'
 
+import styles from './comments.module.scss'
+
 const Comments = ({ post }: { post: IPost }) => {
   const currentUser = useRecoilValue(currentUserState)
   const [text, setText] = useState('')
@@ -22,7 +24,7 @@ const Comments = ({ post }: { post: IPost }) => {
     await updateDoc(targetRef, {
       comments: arrayUnion({
         id: String(Math.random()),
-        user: currentUser?.displayName,
+        user: { name: currentUser?.displayName, profileImg: currentUser?.photoURL },
         text,
       }),
     })
@@ -32,16 +34,21 @@ const Comments = ({ post }: { post: IPost }) => {
 
   return (
     <div>
-      <img src={String(currentUser?.photoURL)} alt='user profile' width={24} />
-      <form onSubmit={handleSubmit}>
-        <input value={text} onChange={handleTextChange} placeholder='댓글을 입력하세요' />
-        <button type='submit'>등록</button>
-      </form>
-      <ul>
+      <div className={styles.commentForm}>
+        <img src={String(currentUser?.photoURL)} alt='user profile' />
+        <form onSubmit={handleSubmit}>
+          <input value={text} onChange={handleTextChange} placeholder='댓글을 입력하세요' />
+          <button type='submit'>등록</button>
+        </form>
+      </div>
+      <ul className={styles.commentList}>
         {post.comments?.map((comment) => (
           <li key={comment.id}>
-            <div>{comment.user}</div>
-            <div>{comment.text}</div>
+            <div className={styles.commenter}>
+              <img src={String(comment.user.profileImg)} alt='' />
+              <div>{comment.user.name}</div>
+            </div>
+            <div className={styles.comment}>{comment.text}</div>
           </li>
         ))}
       </ul>

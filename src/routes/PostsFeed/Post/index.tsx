@@ -65,8 +65,8 @@ const Post = ({ post }: { post: IPost }) => {
           <CommentIcon />
         </button>
         <div>{post.comments?.length || 0}</div>
-        {commentsView && <Comments post={post} />}
       </div>
+      {commentsView && <Comments post={post} />}
     </li>
   )
 }

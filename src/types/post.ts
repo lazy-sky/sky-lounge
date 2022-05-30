@@ -11,7 +11,10 @@ export interface IPost {
   like?: string[]
   comments?: {
     id: string
-    user: string
+    user: {
+      name: string
+      profileImg: string
+    }
     text: string
   }[]
 }
