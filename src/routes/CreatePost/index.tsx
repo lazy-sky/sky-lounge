@@ -1,4 +1,5 @@
-import { ChangeEvent, FormEvent, useState } from 'react'
+/* eslint-disable react/no-children-prop */
+import { ChangeEvent, useCallback, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { addDoc, collection } from 'firebase/firestore'
@@ -6,9 +7,10 @@ import cx from 'classnames'
 
 import { myDb } from 'myFirebase'
 import { currentUserState } from 'store/atom'
+import PageHeader from 'components/_shared/PageHeader'
+import { CameraIcon } from 'assets/svgs'
 
 import styles from './createPost.module.scss'
-import { CameraIcon } from 'assets/svgs'
 
 // TODO: 수정 모드 추가
 // TODO: PageTitle, 뒤로가기 버튼 옵셔널 props
@@ -57,9 +59,7 @@ const CreatePost = () => {
     setSelectedTags((prev) => [...prev, tag])
   }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
-    event.preventDefault()
-
+  const handleCreateClick = useCallback(async () => {
     if (text === '') return
 
     await addDoc(collection(myDb, 'posts'), {
@@ -74,10 +74,20 @@ const CreatePost = () => {
 
     setText('')
     navigate('/')
-  }
+  }, [currentUser, imgSrc, navigate, selectedTags, text])
+
+  const SubmitButton = useMemo(
+    () => (
+      <button type='button' onClick={handleCreateClick} className={styles.submitBtn}>
+        남기기
+      </button>
+    ),
+    [handleCreateClick]
+  )
 
   return (
     <div>
+      <PageHeader title='게시물 만들기' hasBackBtn children={SubmitButton} />
       <ul className={styles.tags}>
         {tags.map((tag) => (
           <li key={tag} className={cx(styles.tag, selectedTags.includes(tag) && styles.active)}>
@@ -87,7 +97,7 @@ const CreatePost = () => {
           </li>
         ))}
       </ul>
-      <form onSubmit={handleSubmit} className={styles.createForm}>
+      <form className={styles.createForm}>
         <div className={styles.attachment}>
           <div className={styles.addImage}>
             <label htmlFor='imageFile'>
@@ -104,8 +114,7 @@ const CreatePost = () => {
           )}
         </div>
         <input id='imageFile' type='file' accept='image/*' onChange={handleFileChange} style={{ display: 'none' }} />
-        <textarea value={text} onChange={handleTextChange} placeholder="What's on your mind?" />
-        <button type='submit'>생성</button>
+        <textarea value={text} onChange={handleTextChange} placeholder='무슨 생각을 하고 있나요?' />
       </form>
     </div>
   )

@@ -7,7 +7,7 @@ import { cloneDeep } from 'lodash'
 
 import { auth } from 'myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
-import Navigation from 'components/Navigation'
+import Navigation from 'components/_shared/Navigation'
 import Profile from './Profile'
 import CreatePost from './CreatePost'
 import PrivateRoute from './PrivateRoute'

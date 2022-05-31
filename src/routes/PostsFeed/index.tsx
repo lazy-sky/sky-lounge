@@ -32,7 +32,6 @@ const PostsFeed = () => {
 
   return (
     <div className={styles.postsFeed}>
-      <h1>아무말 저장소</h1>
       <ul className={styles.postList}>
         {posts.map((post) => (
           <Post key={post.id} post={post} />

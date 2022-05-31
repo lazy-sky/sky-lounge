@@ -6,6 +6,7 @@ import { cloneDeep } from 'lodash'
 
 import { auth } from 'myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
+import PageHeader from 'components/_shared/PageHeader'
 
 const Profile = () => {
   const navigate = useNavigate()
@@ -58,6 +59,7 @@ const Profile = () => {
 
   return (
     <div>
+      <PageHeader title='마이 프로필' />
       {isLoggedIn ? (
         <>
           <img src={String(currentUser?.photoURL)} alt='user profile' />
