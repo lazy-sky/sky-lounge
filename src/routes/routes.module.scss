@@ -6,6 +6,7 @@ $FOOTER_HEIGHT: 56px;
 .container {
   max-width: $MAIN_WIDTH;
   min-height: calc(100vh - $FOOTER_HEIGHT);
+  padding: 0 20px;
   margin: 0 auto;
   border-right: 1px solid $LINE02;
   border-left: 1px solid $LINE02;

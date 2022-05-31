@@ -17,3 +17,42 @@
     }
   }
 }
+
+.createForm {
+  padding: 16px 0;
+
+  textarea {
+    width: 100%;
+    height: 30vh;
+    margin-bottom: 16px;
+    resize: none;
+    border: none;
+    border-bottom: 1px solid $LINE03;
+  }
+
+  .attachment {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 16px;
+
+    img {
+      width: 64px;
+    }
+  }
+
+  .addImage {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 64px;
+    height: 64px;
+    border: 1px solid $LINE01;
+    border-radius: 4px;
+
+    svg {
+      width: 36px;
+      height: 36px;
+      text-align: center;
+    }
+  }
+}

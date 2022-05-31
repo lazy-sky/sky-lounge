@@ -8,8 +8,22 @@ import { myDb } from 'myFirebase'
 import { currentUserState } from 'store/atom'
 
 import styles from './createPost.module.scss'
+import { CameraIcon } from 'assets/svgs'
 
 // TODO: 수정 모드 추가
+// TODO: PageTitle, 뒤로가기 버튼 옵셔널 props
+
+// interface HeaderProps {
+//   title: string
+//   style?: string
+//   children?: React.ReactNode
+// }
+
+// <Header title='의견'>
+//   <BackButton />
+//   <SubmitButton text={getRequestedPage() === 'edit' ? '수정' : '남기기'} onClick={handleSubmitPost} />
+// </Header>
+
 const CreatePost = () => {
   const navigate = useNavigate()
   const currentUser = useRecoilValue(currentUserState)
@@ -73,28 +87,26 @@ const CreatePost = () => {
           </li>
         ))}
       </ul>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className={styles.createForm}>
+        <div className={styles.attachment}>
+          <div className={styles.addImage}>
+            <label htmlFor='imageFile'>
+              <CameraIcon />
+            </label>
+          </div>
+          {imgSrc && (
+            <>
+              <img src={imgSrc} alt='attachment' />
+              <button type='button' onClick={handleFileClear}>
+                삭제
+              </button>
+            </>
+          )}
+        </div>
+        <input id='imageFile' type='file' accept='image/*' onChange={handleFileChange} style={{ display: 'none' }} />
         <textarea value={text} onChange={handleTextChange} placeholder="What's on your mind?" />
-        <label htmlFor='imageFile'>사진 추가</label>
-        <input
-          id='imageFile'
-          type='file'
-          accept='image/*'
-          onChange={handleFileChange}
-          style={{
-            opacity: 0,
-          }}
-        />
         <button type='submit'>생성</button>
       </form>
-      {imgSrc && (
-        <div>
-          <img src={imgSrc} alt='attachment' width='50px' height='50px' />
-          <button type='button' onClick={handleFileClear}>
-            Remove
-          </button>
-        </div>
-      )}
     </div>
   )
 }
