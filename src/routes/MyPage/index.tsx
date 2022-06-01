@@ -58,7 +58,7 @@ const Profile = () => {
   }
 
   return (
-    <div>
+    <>
       <PageHeader title='마이 페이지' />
       {isLoggedIn ? (
         <>
@@ -109,7 +109,7 @@ const Profile = () => {
           </div>
         </>
       )}
-    </div>
+    </>
   )
 }
 

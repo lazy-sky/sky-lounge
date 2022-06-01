@@ -74,7 +74,7 @@ const CreatePost = () => {
   )
 
   return (
-    <div>
+    <div className={styles.container}>
       <PageHeader title='게시물 만들기' hasBackBtn children={SubmitButton} />
       <ul className={styles.tags}>
         {tags.map((tag) => (
