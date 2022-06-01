@@ -48,7 +48,7 @@ const Post = ({ post }: { post: IPost }) => {
       <div className={styles.metaInfo}>
         <div>
           <div className={styles.user}>{post.userName}</div>
-          <div className={styles.createdAt}>{post.createdAt}</div>
+          <div className={styles.createdAt}>{new Date(post.createdAt).toString()}</div>
         </div>
         {post.userId === currentUser?.uid && <OptionsIcon />}
       </div>
