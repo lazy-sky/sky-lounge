@@ -2,7 +2,7 @@ import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
 import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
 
-import { currentUserState } from 'store/atom'
+import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
 import { myDb } from 'myFirebase'
 import Comments from './Comments'
@@ -10,14 +10,22 @@ import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'as
 
 import styles from './post.module.scss'
 import noimage from './noimage.jpg'
+import { useNavigate } from 'react-router-dom'
 
 const Post = ({ post }: { post: IPost }) => {
+  const navigate = useNavigate()
+  const isLoggedIn = useRecoilValue(isLoggedInState)
   const currentUser = useRecoilValue(currentUserState)
   const [commentsView, setCommentsView] = useState(false)
 
   // TODO: 디바운싱
   // TODO: Optimistic UI
   const handleLikeToggle = async (postId: string) => {
+    if (!isLoggedIn) {
+      alert('가입된 사용자만 이용할 수 있습니다')
+      navigate('/mypage')
+      return
+    }
     const targetRef = doc(myDb, 'posts', postId)
     const targetDoc = await getDoc(targetRef)
 

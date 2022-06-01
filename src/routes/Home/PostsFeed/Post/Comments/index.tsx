@@ -3,12 +3,14 @@ import { useRecoilValue } from 'recoil'
 import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
 
 import { myDb } from 'myFirebase'
-import { currentUserState } from 'store/atom'
+import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
+import noimage from '../noimage.jpg'
 
 import styles from './comments.module.scss'
 
 const Comments = ({ post }: { post: IPost }) => {
+  const isLoggedIn = useRecoilValue(isLoggedInState)
   const currentUser = useRecoilValue(currentUserState)
   const [text, setText] = useState('')
 
@@ -34,13 +36,24 @@ const Comments = ({ post }: { post: IPost }) => {
 
   return (
     <div>
-      <div className={styles.commentForm}>
-        <img src={String(currentUser?.photoURL)} alt='user profile' />
-        <form onSubmit={handleSubmit}>
-          <input value={text} onChange={handleTextChange} placeholder='댓글을 입력하세요' />
-          <button type='submit'>등록</button>
-        </form>
-      </div>
+      {isLoggedIn ? (
+        <div className={styles.commentForm}>
+          <img src={String(currentUser?.photoURL)} alt='user profile' />
+          <form onSubmit={handleSubmit} className={styles.createComment}>
+            <input value={text} onChange={handleTextChange} placeholder='댓글을 입력하세요' />
+            <button type='submit'>등록</button>
+          </form>
+        </div>
+      ) : (
+        <div className={styles.commentForm}>
+          <img src={noimage} alt='user profile' />
+          <div className={styles.createComment}>
+            <input placeholder='가입 사용자만 이용할 수 있습니다.' />
+            <button type='button'>등록</button>
+          </div>
+        </div>
+      )}
+
       <ul className={styles.commentList}>
         {post.comments?.map((comment) => (
           <li key={comment.id}>
