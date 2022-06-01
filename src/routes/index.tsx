@@ -8,13 +8,13 @@ import { cloneDeep } from 'lodash'
 import { auth } from 'myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import Navigation from 'components/_shared/Navigation'
-import Profile from './Profile'
+import MyPage from './MyPage'
 import CreatePost from './CreatePost'
 import PrivateRoute from './PrivateRoute'
 import Home from './Home'
 
 import styles from './routes.module.scss'
-import Chat from './Chat'
+import ChatRoom from './ChatRoom'
 
 const App = () => {
   const queryClient = new QueryClient()
@@ -47,7 +47,7 @@ const App = () => {
       <div className={styles.container}>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='profile' element={<Profile />} />
+          <Route path='mypage' element={<MyPage />} />
           <Route
             path='/write/*'
             element={
@@ -56,7 +56,7 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route path='chat' element={<Chat />} />
+          <Route path='chat' element={<ChatRoom />} />
         </Routes>
       </div>
       <footer>

@@ -32,7 +32,7 @@ const Navigation = () => {
           </Link>
         </li>
         <li>
-          <Link to='profile' className={cx(checkIsActive('/profile') && styles.active)}>
+          <Link to='mypage' className={cx(checkIsActive('/mypage') && styles.active)}>
             <UserIcon />
           </Link>
         </li>

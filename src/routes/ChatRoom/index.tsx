@@ -1,12 +1,12 @@
 import PageHeader from 'components/_shared/PageHeader'
 
-const Chat = () => {
+const ChatRoom = () => {
   return (
     <div>
       <PageHeader title='전체 채팅방' />
-      <div>Chat Room</div>
+      <div>ChatRoom</div>
     </div>
   )
 }
 
-export default Chat
+export default ChatRoom
