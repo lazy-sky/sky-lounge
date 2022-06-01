@@ -9,7 +9,7 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
   return (
     <>
       {isLoggedIn || alert('로그인이 필요합니다.')}
-      {isLoggedIn ? children : <Navigate to='/profile' />}
+      {isLoggedIn ? children : <Navigate to='/mypage' />}
     </>
   )
 }

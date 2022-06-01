@@ -1,5 +1,4 @@
 import { useState, ChangeEvent, FormEvent, MouseEvent, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
 import { useRecoilState } from 'recoil'
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
@@ -7,9 +6,11 @@ import { cloneDeep } from 'lodash'
 import { auth } from 'myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
+import { GithubIcon, GoogleIcon } from 'assets/svgs'
+
+import styles from './myPage.module.scss'
 
 const Profile = () => {
-  const navigate = useNavigate()
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
   // TODO: 랜덤 닉네임 생성
@@ -54,38 +55,59 @@ const Profile = () => {
     setIsLoggedIn(false)
     setCurrentUser(null)
     signOut(auth)
-    navigate('/')
   }
 
   return (
     <div>
-      <PageHeader title='마이 프로필' />
+      <PageHeader title='마이 페이지' />
       {isLoggedIn ? (
         <>
-          <img src={String(currentUser?.photoURL)} alt='user profile' />
-          <form onSubmit={handleSubmit}>
-            닉네임:
+          <div className={styles.profileImage}>
+            <img src={String(currentUser?.photoURL)} alt='user profile' />
+          </div>
+          <form onSubmit={handleSubmit} className={styles.displayName}>
             <input
               type='text'
               placeholder='닉네임을 입력해주세요'
               value={newDisplayName}
               onChange={handleDisplayNameChange}
             />
-            <button type='submit'>변경</button>
+            {currentUser?.displayName !== newDisplayName && <button type='submit'>변경</button>}
           </form>
-          <button type='button' onClick={handleLogOutClick}>
-            Log Out
-          </button>
+          {/* TODO: 내가 쓴 글, 내가 쓴 댓글 */}
+          <div className={styles.editInfo}>
+            <h4>내 정보 변경</h4>
+            <ul>
+              <li>
+                <div>계정정보</div>
+                <div>{currentUser?.email}</div>
+              </li>
+              <li>
+                <button type='button' onClick={handleLogOutClick}>
+                  로그아웃
+                </button>
+              </li>
+              <li>
+                {/* TODO: 회원 탈퇴 기능 */}
+                <button type='button'>회원 탈퇴</button>
+              </li>
+            </ul>
+          </div>
         </>
       ) : (
-        <div style={{ display: 'flex', gap: '20px' }}>
-          <button type='button' name='google' onClick={handleSocialLoginClick}>
-            Continue with Google
-          </button>
-          <button type='button' name='github' onClick={handleSocialLoginClick}>
-            Continue with Github
-          </button>
-        </div>
+        <>
+          <div className={styles.logo}>서비스 로고</div>
+          <div className={styles.socialBtns}>
+            <button type='button' name='google' onClick={handleSocialLoginClick}>
+              <GoogleIcon />
+              Google로 로그인
+            </button>
+            <button type='button' name='github' onClick={handleSocialLoginClick}>
+              <GithubIcon />
+              Github로 로그인
+            </button>
+          </div>
+        </>
       )}
     </div>
   )

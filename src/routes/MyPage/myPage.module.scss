@@ -1,0 +1,84 @@
+@import '/src/styles/index';
+
+// 로그인 전
+.logo {
+  height: 240px;
+  margin: 100px 0;
+  text-align: center;
+}
+
+.socialBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+
+  button {
+    @include body2;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    padding: 4px;
+    color: $WHITE;
+    background-color: $BODY03;
+    border-radius: 8px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+      padding: 4px;
+    }
+  }
+}
+
+// 로그인 후
+
+.profileImage {
+  width: 96px;
+  margin: 40px auto 16px;
+
+  img {
+    width: 100%;
+    border-radius: 100%;
+  }
+}
+
+.displayName {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  align-items: center;
+
+  input {
+    @include body3;
+    padding: 4px;
+    margin: 0 auto;
+    text-align: center;
+    border-bottom: 1px solid $LINE02;
+  }
+}
+
+.editInfo {
+  margin-top: 40px;
+
+  h4 {
+    @include body7;
+    padding: 8px 20px;
+    color: $TITLE02;
+    background-color: $SURFACE;
+  }
+
+  ul {
+    @include body8;
+    display: flex;
+    flex-direction: column;
+
+    li {
+      display: flex;
+      justify-content: space-between;
+      padding: 20px 16px;
+    }
+  }
+}
