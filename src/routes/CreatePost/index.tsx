@@ -13,18 +13,6 @@ import { CameraIcon } from 'assets/svgs'
 import styles from './createPost.module.scss'
 
 // TODO: 수정 모드 추가
-// TODO: PageTitle, 뒤로가기 버튼 옵셔널 props
-
-// interface HeaderProps {
-//   title: string
-//   style?: string
-//   children?: React.ReactNode
-// }
-
-// <Header title='의견'>
-//   <BackButton />
-//   <SubmitButton text={getRequestedPage() === 'edit' ? '수정' : '남기기'} onClick={handleSubmitPost} />
-// </Header>
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -65,7 +53,7 @@ const CreatePost = () => {
     await addDoc(collection(myDb, 'posts'), {
       userId: currentUser?.uid,
       userName: currentUser?.displayName,
-      createdAt: String(new Date()),
+      createdAt: Date.now(),
       content: { text, imgSrc },
       tags: selectedTags,
       like: [],

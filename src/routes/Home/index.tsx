@@ -1,5 +1,5 @@
 import PageHeader from 'components/_shared/PageHeader'
-import PostsFeed from 'routes/PostsFeed'
+import PostsFeed from './PostsFeed'
 
 const Home = () => {
   return (

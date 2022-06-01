@@ -5,7 +5,7 @@ import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firest
 import { currentUserState } from 'store/atom'
 import { IPost } from 'types/post'
 import { myDb } from 'myFirebase'
-import Comments from '../Comments'
+import Comments from './Comments'
 import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
 
 import styles from './post.module.scss'
