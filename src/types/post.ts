@@ -19,3 +19,13 @@ export interface IPost {
     text: string
   }[]
 }
+
+export interface IComment {
+  id: string
+  user: {
+    id: string
+    name: string
+    profileImg: string
+  }
+  text: string
+}
