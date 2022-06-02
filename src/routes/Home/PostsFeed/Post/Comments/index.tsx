@@ -1,6 +1,6 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { useRecoilValue } from 'recoil'
-import { arrayUnion, doc, updateDoc } from 'firebase/firestore'
+import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore'
 
 import { myDb } from 'myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
@@ -26,9 +26,18 @@ const Comments = ({ post }: { post: IPost }) => {
     await updateDoc(targetRef, {
       comments: arrayUnion({
         id: String(Math.random()),
-        user: { name: currentUser?.displayName, profileImg: currentUser?.photoURL },
+        user: { id: currentUser?.uid, name: currentUser?.displayName, profileImg: currentUser?.photoURL },
         text,
       }),
+    })
+
+    await addDoc(collection(myDb, 'comments'), {
+      user: {
+        id: currentUser?.uid,
+        name: currentUser?.displayName,
+        profileImg: currentUser?.photoURL,
+      },
+      text,
     })
 
     setText('')

@@ -1,24 +1,69 @@
-import { useState, ChangeEvent, FormEvent, MouseEvent, useEffect } from 'react'
+import { useState, ChangeEvent, FormEvent, MouseEvent, useMemo } from 'react'
 import { useRecoilState } from 'recoil'
+import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
-import { auth } from 'myFirebase'
+import { auth, myDb } from 'myFirebase'
+import { IComment, IPost } from 'types/post'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
+import Post from 'routes/Home/PostsFeed/Post'
 import { GithubIcon, GoogleIcon } from 'assets/svgs'
 
 import styles from './myPage.module.scss'
+import { useMount } from 'react-use'
 
 const Profile = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
   // TODO: 랜덤 닉네임 생성
   const [newDisplayName, setNewDisplayname] = useState(currentUser?.displayName || '')
+  const [myPosts, setMyPosts] = useState<IPost[]>()
+  const [myComments, setMyComments] = useState<IComment[]>()
 
-  useEffect(() => {
+  const getMyWritings = async () => {
+    const postsQuery = query(collection(myDb, 'posts'), where('userId', '==', currentUser?.uid))
+    onSnapshot(postsQuery, (snapshot) => {
+      const postList = snapshot.docs.map(
+        (document) =>
+          ({
+            id: document.id,
+            ...document.data(),
+          } as IPost)
+      )
+      setMyPosts(postList)
+    })
+
+    const commentsQuery = query(collection(myDb, 'comments'), where('user.id', '==', currentUser?.uid))
+    onSnapshot(commentsQuery, (snapshot) => {
+      const commentList = snapshot.docs.map(
+        (document) =>
+          ({
+            id: document.id,
+            ...document.data(),
+          } as IComment)
+      )
+      setMyComments(commentList)
+    })
+  }
+
+  useMount(() => {
     setNewDisplayname(currentUser?.displayName || '')
-  }, [currentUser])
+    getMyWritings()
+  })
+
+  // TODO: PostList, Post 공동 컴포넌트로 관리
+  const PostList = useMemo(
+    () => (
+      <ul className={styles.postList}>
+        {myPosts?.map((post) => (
+          <Post key={post.id} post={post} />
+        ))}
+      </ul>
+    ),
+    [myPosts]
+  )
 
   const handleSocialLoginClick = async (event: MouseEvent<HTMLButtonElement>) => {
     const {
@@ -74,7 +119,14 @@ const Profile = () => {
             />
             {currentUser?.displayName !== newDisplayName && <button type='submit'>변경</button>}
           </form>
-          {/* TODO: 내가 쓴 글, 내가 쓴 댓글 */}
+          <div>
+            <dl>
+              <dt>내가 쓴 글</dt>
+              <dd>{myPosts?.length || 0}</dd>
+              <dt>내가 쓴 댓글</dt>
+              <dd>{myComments?.length || 0}</dd>
+            </dl>
+          </div>
           <div className={styles.editInfo}>
             <h4>내 정보 변경</h4>
             <ul>

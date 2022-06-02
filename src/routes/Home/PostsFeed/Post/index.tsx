@@ -32,6 +32,8 @@ const Post = ({ post }: { post: IPost }) => {
     const targetRef = doc(myDb, 'posts', postId)
     const targetDoc = await getDoc(targetRef)
 
+    console.log(targetDoc.data()?.userId)
+
     if (targetDoc.data()?.like.includes(currentUser?.uid)) {
       await updateDoc(targetRef, {
         like: arrayRemove(currentUser?.uid),
