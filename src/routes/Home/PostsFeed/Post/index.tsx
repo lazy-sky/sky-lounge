@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useRecoilValue } from 'recoil'
-import { arrayRemove, arrayUnion, doc, getDoc, updateDoc } from 'firebase/firestore'
+import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
 
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
@@ -51,6 +51,14 @@ const Post = ({ post }: { post: IPost }) => {
     setCommentsView((prev) => !prev)
   }
 
+  const handleDeleteClick = async (postId: string) => {
+    Swal.fire({ title: '정말로 삭제하시겠습니까?', showDenyButton: true }).then(async ({ isConfirmed }) => {
+      if (isConfirmed) {
+        await deleteDoc(doc(myDb, 'posts', postId))
+      }
+    })
+  }
+
   return (
     <li key={post.id} className={styles.post}>
       <ul className={styles.tags}>
@@ -76,7 +84,9 @@ const Post = ({ post }: { post: IPost }) => {
                   <button type='button'>수정</button>
                 </li>
                 <li>
-                  <button type='button'>삭제</button>
+                  <button type='button' onClick={() => handleDeleteClick(post.id)}>
+                    삭제
+                  </button>
                 </li>
               </ul>
             )}
