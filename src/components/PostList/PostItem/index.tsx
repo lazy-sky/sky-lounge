@@ -7,7 +7,7 @@ import Swal from 'sweetalert2'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
 import { myDb } from 'myFirebase'
-import Comments from 'components/CommentList'
+import CommentsWrapper from 'components/CommentsWrapper'
 import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
 import noimage from './noimage.jpg'
 
@@ -116,7 +116,7 @@ const PostItem = ({ post }: { post: IPost }) => {
         </button>
         <div>{post.comments?.length || 0}</div>
       </div>
-      {commentsView && <Comments post={post} />}
+      {commentsView && <CommentsWrapper post={post} />}
     </li>
   )
 }

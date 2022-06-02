@@ -1,0 +1,58 @@
+@import '/src/styles/index';
+
+.commentForm {
+  display: grid;
+  grid-template-columns: 28px 1fr;
+  gap: 8px;
+  margin: 20px 0;
+
+  img {
+    width: 100%;
+    border-radius: 100%;
+  }
+
+  .createComment {
+    display: grid;
+    grid-template-columns: 1fr minmax(42px, auto);
+    gap: 8px;
+
+    input {
+      @include body8;
+      padding: 6px 12px;
+      color: $TITLE02;
+      background-color: $LINE03;
+      border-radius: 4px;
+    }
+
+    button {
+      @include flag;
+      padding: 4px 12px;
+      color: $WHITE;
+      background-color: $BLUE02;
+      border-radius: 4px;
+    }
+  }
+}
+
+.commentList {
+  li {
+    @include body8;
+    padding: 16px 0;
+
+    .commenter {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      margin-bottom: 8px;
+
+      img {
+        width: 24px;
+        border-radius: 100%;
+      }
+    }
+
+    .comment {
+      margin-left: 32px;
+    }
+  }
+}
