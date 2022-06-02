@@ -4,6 +4,7 @@ import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 import { useMount } from 'react-use'
+import cx from 'classnames'
 
 import { auth, myDb } from 'myFirebase'
 import { IComment, IPost } from 'types/post'
@@ -79,10 +80,12 @@ const Profile = () => {
 
   const handleMyPostsClick = () => {
     setPostsView((prev) => !prev)
+    setCommentsView(false)
   }
 
   const handleMyCommentsClick = () => {
     setCommentsView((prev) => !prev)
+    setPostsView(false)
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -119,24 +122,18 @@ const Profile = () => {
             />
             {currentUser?.displayName !== newDisplayName && <button type='submit'>변경</button>}
           </form>
-          <div>
-            <dl>
-              <dt>
-                <button type='button' onClick={handleMyPostsClick}>
-                  내가 쓴 글
-                </button>
-              </dt>
+          <dl className={styles.myWritings}>
+            <button type='button' onClick={handleMyPostsClick} className={cx(postsView && styles.active)}>
+              <dt>내가 쓴 글</dt>
               <dd>{myPosts?.length || 0}</dd>
-              <dt>
-                <button type='button' onClick={handleMyCommentsClick}>
-                  내가 쓴 댓글
-                </button>
-              </dt>
+            </button>
+            <button type='button' onClick={handleMyCommentsClick} className={cx(commentsView && styles.active)}>
+              <dt>내가 쓴 댓글</dt>
               <dd>{myComments?.length || 0}</dd>
-            </dl>
-            {postsView && <PostList posts={myPosts} />}
-            {commentsView && <CommentList comments={myComments} />}
-          </div>
+            </button>
+          </dl>
+          {postsView && <PostList posts={myPosts} />}
+          {commentsView && <CommentList comments={myComments} />}
           <div className={styles.editInfo}>
             <h4>내 정보 변경</h4>
             <ul>

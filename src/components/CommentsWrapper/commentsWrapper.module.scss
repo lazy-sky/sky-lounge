@@ -33,26 +33,3 @@
     }
   }
 }
-
-.commentList {
-  li {
-    @include body8;
-    padding: 16px 0;
-
-    .commenter {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-      margin-bottom: 8px;
-
-      img {
-        width: 24px;
-        border-radius: 100%;
-      }
-    }
-
-    .comment {
-      margin-left: 32px;
-    }
-  }
-}

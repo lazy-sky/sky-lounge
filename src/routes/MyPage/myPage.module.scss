@@ -60,6 +60,23 @@
   }
 }
 
+.myWritings {
+  display: flex;
+  justify-content: space-around;
+  padding: 12px;
+  margin: 32px 64px;
+  background-color: $SURFACE;
+  border-radius: 12px;
+
+  dt {
+    margin-bottom: 8px;
+  }
+
+  .active {
+    color: $BLUE02;
+  }
+}
+
 .editInfo {
   margin-top: 40px;
 
