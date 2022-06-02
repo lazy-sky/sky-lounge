@@ -3,27 +3,32 @@ import { useRecoilState } from 'recoil'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
+import { useMount } from 'react-use'
 
 import { auth, myDb } from 'myFirebase'
 import { IComment, IPost } from 'types/post'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
-
+import PostList from 'components/PostList'
+import CommentList from 'components/CommentList'
 import { GithubIcon, GoogleIcon } from 'assets/svgs'
 
 import styles from './myPage.module.scss'
-import { useMount } from 'react-use'
 
 const Profile = () => {
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
   // TODO: 랜덤 닉네임 생성
   const [newDisplayName, setNewDisplayname] = useState(currentUser?.displayName || '')
-  const [myPosts, setMyPosts] = useState<IPost[]>()
-  const [myComments, setMyComments] = useState<IComment[]>()
+  const [myPosts, setMyPosts] = useState<IPost[]>([])
+  const [myComments, setMyComments] = useState<IComment[]>([])
+  const [postsView, setPostsView] = useState(false)
+  const [commentsView, setCommentsView] = useState(false)
 
   const getMyWritings = async () => {
     const postsQuery = query(collection(myDb, 'posts'), where('userId', '==', currentUser?.uid))
+    const commentsQuery = query(collection(myDb, 'comments'), where('user.id', '==', currentUser?.uid))
+
     onSnapshot(postsQuery, (snapshot) => {
       const postList = snapshot.docs.map(
         (document) =>
@@ -35,7 +40,6 @@ const Profile = () => {
       setMyPosts(postList)
     })
 
-    const commentsQuery = query(collection(myDb, 'comments'), where('user.id', '==', currentUser?.uid))
     onSnapshot(commentsQuery, (snapshot) => {
       const commentList = snapshot.docs.map(
         (document) =>
@@ -71,6 +75,14 @@ const Profile = () => {
 
   const handleDisplayNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNewDisplayname(event.target.value)
+  }
+
+  const handleMyPostsClick = () => {
+    setPostsView((prev) => !prev)
+  }
+
+  const handleMyCommentsClick = () => {
+    setCommentsView((prev) => !prev)
   }
 
   const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
@@ -109,11 +121,21 @@ const Profile = () => {
           </form>
           <div>
             <dl>
-              <dt>내가 쓴 글</dt>
+              <dt>
+                <button type='button' onClick={handleMyPostsClick}>
+                  내가 쓴 글
+                </button>
+              </dt>
               <dd>{myPosts?.length || 0}</dd>
-              <dt>내가 쓴 댓글</dt>
+              <dt>
+                <button type='button' onClick={handleMyCommentsClick}>
+                  내가 쓴 댓글
+                </button>
+              </dt>
               <dd>{myComments?.length || 0}</dd>
             </dl>
+            {postsView && <PostList posts={myPosts} />}
+            {commentsView && <CommentList comments={myComments} />}
           </div>
           <div className={styles.editInfo}>
             <h4>내 정보 변경</h4>
