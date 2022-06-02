@@ -15,6 +15,7 @@ import Home from './Home'
 
 import styles from './routes.module.scss'
 import ChatRoom from './ChatRoom'
+import SignIn from './SignIn'
 
 const App = () => {
   const queryClient = new QueryClient()
@@ -47,12 +48,20 @@ const App = () => {
       <div className={styles.container}>
         <Routes>
           <Route path='/' element={<Home />} />
-          <Route path='mypage' element={<MyPage />} />
+          <Route path='signin' element={<SignIn />} />
           <Route
             path='/write/*'
             element={
               <PrivateRoute>
                 <CreatePost />
+              </PrivateRoute>
+            }
+          />
+          <Route
+            path='/mypage'
+            element={
+              <PrivateRoute>
+                <MyPage />
               </PrivateRoute>
             }
           />

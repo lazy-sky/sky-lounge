@@ -1,0 +1,33 @@
+@import '/src/styles/index';
+
+.logo {
+  height: 240px;
+  margin: 100px 0;
+  text-align: center;
+}
+
+.socialBtns {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  align-items: center;
+
+  button {
+    @include body2;
+    display: flex;
+    gap: 24px;
+    align-items: center;
+    justify-content: center;
+    width: 80%;
+    padding: 4px;
+    color: $WHITE;
+    background-color: $BODY03;
+    border-radius: 8px;
+
+    svg {
+      width: 32px;
+      height: 32px;
+      padding: 4px;
+    }
+  }
+}

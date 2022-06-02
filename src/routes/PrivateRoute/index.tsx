@@ -10,7 +10,7 @@ const PrivateRoute = ({ children }: { children: ReactNode }) => {
 
   if (!isLoggedIn) {
     Swal.fire('로그인이 필요합니다.')
-    return <Navigate to='/mypage' />
+    return <Navigate to='/signin' />
   }
 
   return <div>{children}</div>

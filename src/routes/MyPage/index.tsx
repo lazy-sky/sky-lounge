@@ -1,7 +1,7 @@
-import { useState, ChangeEvent, FormEvent, MouseEvent } from 'react'
-import { useRecoilState } from 'recoil'
+import { useState, ChangeEvent, FormEvent } from 'react'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
-import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth'
+import { signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 import { useMount } from 'react-use'
 import cx from 'classnames'
@@ -12,12 +12,11 @@ import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
 import PostList from 'components/PostList'
 import CommentList from 'components/CommentList'
-import { GithubIcon, GoogleIcon } from 'assets/svgs'
 
 import styles from './myPage.module.scss'
 
 const Profile = () => {
-  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState)
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
   // TODO: 랜덤 닉네임 생성
   const [newDisplayName, setNewDisplayname] = useState(currentUser?.displayName || '')
@@ -58,22 +57,6 @@ const Profile = () => {
     getMyWritings()
   })
 
-  const handleSocialLoginClick = async (event: MouseEvent<HTMLButtonElement>) => {
-    const {
-      currentTarget: { name },
-    } = event
-
-    if (name === 'google') {
-      await signInWithPopup(auth, new GoogleAuthProvider())
-    }
-
-    if (name === 'github') {
-      await signInWithPopup(auth, new GithubAuthProvider())
-    }
-
-    setCurrentUser(cloneDeep(auth.currentUser))
-  }
-
   const handleDisplayNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNewDisplayname(event.target.value)
   }
@@ -108,70 +91,52 @@ const Profile = () => {
   return (
     <>
       <PageHeader title='마이 페이지' />
-      {isLoggedIn ? (
-        <>
-          <div className={styles.profileImage}>
-            <img src={String(currentUser?.photoURL)} alt='user profile' />
-          </div>
-          <form onSubmit={handleSubmit} className={styles.displayName}>
-            <input
-              type='text'
-              placeholder='닉네임을 입력해주세요'
-              value={newDisplayName}
-              onChange={handleDisplayNameChange}
-            />
-            {currentUser?.displayName !== newDisplayName && <button type='submit'>변경</button>}
-          </form>
-          <div className={styles.myWritings}>
-            <dl>
-              <button type='button' onClick={handleMyPostsClick} className={cx(postsView && styles.active)}>
-                <dt>내가 쓴 글</dt>
-                <dd>{myPosts?.length || 0}</dd>
-              </button>
-              <button type='button' onClick={handleMyCommentsClick} className={cx(commentsView && styles.active)}>
-                <dt>내가 쓴 댓글</dt>
-                <dd>{myComments?.length || 0}</dd>
-              </button>
-            </dl>
-            <div>
-              {postsView && <PostList posts={myPosts} />}
-              {commentsView && <CommentList comments={myComments} />}
-            </div>
-          </div>
-          <div className={styles.editInfo}>
-            <h4>내 정보 변경</h4>
-            <ul>
-              <li>
-                <div>계정정보</div>
-                <div>{currentUser?.email}</div>
-              </li>
-              <li>
-                <button type='button' onClick={handleLogOutClick}>
-                  로그아웃
-                </button>
-              </li>
-              <li>
-                {/* TODO: 회원 탈퇴 기능 */}
-                <button type='button'>회원 탈퇴</button>
-              </li>
-            </ul>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className={styles.logo}>서비스 로고</div>
-          <div className={styles.socialBtns}>
-            <button type='button' name='google' onClick={handleSocialLoginClick}>
-              <GoogleIcon />
-              Google로 로그인
+      <div className={styles.profileImage}>
+        <img src={String(currentUser?.photoURL)} alt='user profile' />
+      </div>
+      <form onSubmit={handleSubmit} className={styles.displayName}>
+        <input
+          type='text'
+          placeholder='닉네임을 입력해주세요'
+          value={newDisplayName}
+          onChange={handleDisplayNameChange}
+        />
+        {currentUser?.displayName !== newDisplayName && <button type='submit'>변경</button>}
+      </form>
+      <div className={styles.myWritings}>
+        <dl>
+          <button type='button' onClick={handleMyPostsClick} className={cx(postsView && styles.active)}>
+            <dt>내가 쓴 글</dt>
+            <dd>{myPosts?.length || 0}</dd>
+          </button>
+          <button type='button' onClick={handleMyCommentsClick} className={cx(commentsView && styles.active)}>
+            <dt>내가 쓴 댓글</dt>
+            <dd>{myComments?.length || 0}</dd>
+          </button>
+        </dl>
+        <div>
+          {postsView && <PostList posts={myPosts} />}
+          {commentsView && <CommentList comments={myComments} />}
+        </div>
+      </div>
+      <div className={styles.editInfo}>
+        <h4>내 정보 변경</h4>
+        <ul>
+          <li>
+            <div>계정정보</div>
+            <div>{currentUser?.email}</div>
+          </li>
+          <li>
+            <button type='button' onClick={handleLogOutClick}>
+              로그아웃
             </button>
-            <button type='button' name='github' onClick={handleSocialLoginClick}>
-              <GithubIcon />
-              Github로 로그인
-            </button>
-          </div>
-        </>
-      )}
+          </li>
+          <li>
+            {/* TODO: 회원 탈퇴 기능 */}
+            <button type='button'>회원 탈퇴</button>
+          </li>
+        </ul>
+      </div>
     </>
   )
 }
