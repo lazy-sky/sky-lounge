@@ -1,6 +1,7 @@
 @import '/src/styles/index';
 
 .navigation {
+  z-index: $GNB;
   height: 100%;
 
   ul {
