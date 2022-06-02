@@ -122,18 +122,22 @@ const Profile = () => {
             />
             {currentUser?.displayName !== newDisplayName && <button type='submit'>변경</button>}
           </form>
-          <dl className={styles.myWritings}>
-            <button type='button' onClick={handleMyPostsClick} className={cx(postsView && styles.active)}>
-              <dt>내가 쓴 글</dt>
-              <dd>{myPosts?.length || 0}</dd>
-            </button>
-            <button type='button' onClick={handleMyCommentsClick} className={cx(commentsView && styles.active)}>
-              <dt>내가 쓴 댓글</dt>
-              <dd>{myComments?.length || 0}</dd>
-            </button>
-          </dl>
-          {postsView && <PostList posts={myPosts} />}
-          {commentsView && <CommentList comments={myComments} />}
+          <div className={styles.myWritings}>
+            <dl>
+              <button type='button' onClick={handleMyPostsClick} className={cx(postsView && styles.active)}>
+                <dt>내가 쓴 글</dt>
+                <dd>{myPosts?.length || 0}</dd>
+              </button>
+              <button type='button' onClick={handleMyCommentsClick} className={cx(commentsView && styles.active)}>
+                <dt>내가 쓴 댓글</dt>
+                <dd>{myComments?.length || 0}</dd>
+              </button>
+            </dl>
+            <div>
+              {postsView && <PostList posts={myPosts} />}
+              {commentsView && <CommentList comments={myComments} />}
+            </div>
+          </div>
           <div className={styles.editInfo}>
             <h4>내 정보 변경</h4>
             <ul>
