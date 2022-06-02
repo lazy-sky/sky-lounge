@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
-import { auth } from 'myFirebase'
+import { auth } from 'services/myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
 import { GithubIcon, GoogleIcon } from 'assets/svgs'

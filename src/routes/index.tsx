@@ -5,7 +5,7 @@ import { useMount } from 'react-use'
 import { onAuthStateChanged } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
-import { auth } from 'myFirebase'
+import { auth } from 'services/myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import Navigation from 'components/_shared/Navigation'
 import MyPage from './MyPage'

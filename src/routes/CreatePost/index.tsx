@@ -4,7 +4,7 @@ import { useRecoilValue } from 'recoil'
 import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
 import cx from 'classnames'
 
-import { myDb } from 'myFirebase'
+import { myDb } from 'services/myFirebase'
 import { currentUserState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
 import SubmitButton from './SubmitButton'

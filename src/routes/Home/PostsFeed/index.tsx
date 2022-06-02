@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 
-import { myDb } from 'myFirebase'
+import { myDb } from 'services/myFirebase'
 import { IPost } from 'types/post'
 import PostList from 'components/PostList'
 

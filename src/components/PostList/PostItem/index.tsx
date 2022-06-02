@@ -7,7 +7,7 @@ import dayjs from 'dayjs'
 
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
-import { myDb } from 'myFirebase'
+import { myDb } from 'services/myFirebase'
 import CommentsWrapper from 'components/CommentsWrapper'
 import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
 import noimage from './noimage.jpg'

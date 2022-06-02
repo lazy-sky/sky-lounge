@@ -1,12 +1,11 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
-import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { deleteUser, signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 import { useMount } from 'react-use'
 import cx from 'classnames'
 
-import { auth, myDb } from 'myFirebase'
+import { auth } from 'services/myFirebase'
 import { IComment, IPost } from 'types/post'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
@@ -16,8 +15,9 @@ import CommentList from 'components/CommentList'
 import styles from './myPage.module.scss'
 import { useNavigate } from 'react-router-dom'
 import Swal from 'sweetalert2'
+import { setMyCommentsInRealTime, setMyPostsInRealTime } from 'services/getData'
 
-const Profile = () => {
+const MyPage = () => {
   const navigate = useNavigate()
   const setIsLoggedIn = useSetRecoilState(isLoggedInState)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
@@ -28,37 +28,11 @@ const Profile = () => {
   const [postsView, setPostsView] = useState(false)
   const [commentsView, setCommentsView] = useState(false)
 
-  const getMyWritings = async () => {
-    const postsQuery = query(collection(myDb, 'posts'), where('userId', '==', currentUser?.uid))
-    const commentsQuery = query(collection(myDb, 'comments'), where('user.id', '==', currentUser?.uid))
-
-    // TODO: service 로직 분리
-    onSnapshot(postsQuery, (snapshot) => {
-      const postList = snapshot.docs.map(
-        (document) =>
-          ({
-            id: document.id,
-            ...document.data(),
-          } as IPost)
-      )
-      setMyPosts(postList)
-    })
-
-    onSnapshot(commentsQuery, (snapshot) => {
-      const commentList = snapshot.docs.map(
-        (document) =>
-          ({
-            id: document.id,
-            ...document.data(),
-          } as IComment)
-      )
-      setMyComments(commentList)
-    })
-  }
-
+  // TODO: service 로직 분리, 다른 곳들도
   useMount(() => {
     setNewDisplayname(currentUser?.displayName || '')
-    getMyWritings()
+    setMyPostsInRealTime(setMyPosts, currentUser!.uid)
+    setMyCommentsInRealTime(setMyComments, currentUser!.uid)
   })
 
   const handleDisplayNameChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -160,4 +134,4 @@ const Profile = () => {
   )
 }
 
-export default Profile
+export default MyPage

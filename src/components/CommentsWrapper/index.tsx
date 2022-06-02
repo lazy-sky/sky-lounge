@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import { useRecoilValue } from 'recoil'
 import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firestore'
 
-import { myDb } from 'myFirebase'
+import { myDb } from 'services/myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
 import noimage from './noimage.jpg'
