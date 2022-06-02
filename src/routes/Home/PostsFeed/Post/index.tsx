@@ -11,6 +11,7 @@ import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'as
 import styles from './post.module.scss'
 import noimage from './noimage.jpg'
 import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const Post = ({ post }: { post: IPost }) => {
   const navigate = useNavigate()
@@ -22,10 +23,11 @@ const Post = ({ post }: { post: IPost }) => {
   // TODO: Optimistic UI
   const handleLikeToggle = async (postId: string) => {
     if (!isLoggedIn) {
-      alert('가입된 사용자만 이용할 수 있습니다')
+      Swal.fire('로그인이 필요합니다.')
       navigate('/mypage')
       return
     }
+
     const targetRef = doc(myDb, 'posts', postId)
     const targetDoc = await getDoc(targetRef)
 
