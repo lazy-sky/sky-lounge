@@ -1,7 +1,7 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
-import { signOut, updateProfile, User } from 'firebase/auth'
+import { deleteUser, signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 import { useMount } from 'react-use'
 import cx from 'classnames'
@@ -32,6 +32,7 @@ const Profile = () => {
     const postsQuery = query(collection(myDb, 'posts'), where('userId', '==', currentUser?.uid))
     const commentsQuery = query(collection(myDb, 'comments'), where('user.id', '==', currentUser?.uid))
 
+    // TODO: service 로직 분리
     onSnapshot(postsQuery, (snapshot) => {
       const postList = snapshot.docs.map(
         (document) =>
@@ -74,7 +75,7 @@ const Profile = () => {
     setPostsView(false)
   }
 
-  const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+  const handleNewNameSubmit = async (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault()
     if (currentUser?.displayName === newDisplayName) return
 
@@ -93,13 +94,25 @@ const Profile = () => {
     navigate('/')
   }
 
+  const handleWithdrawlClick = () => {
+    deleteUser(auth.currentUser as User)
+      .then(() => {
+        setIsLoggedIn(false)
+        setCurrentUser(null)
+      })
+      .then(() => {
+        Swal.fire('성공적으로 회원 탈퇴되었습니다.')
+        navigate('/')
+      })
+  }
+
   return (
     <>
       <PageHeader title='마이 페이지' />
       <div className={styles.profileImage}>
         <img src={String(currentUser?.photoURL)} alt='user profile' />
       </div>
-      <form onSubmit={handleSubmit} className={styles.displayName}>
+      <form onSubmit={handleNewNameSubmit} className={styles.displayName}>
         <input
           type='text'
           placeholder='닉네임을 입력해주세요'
@@ -137,8 +150,9 @@ const Profile = () => {
             </button>
           </li>
           <li>
-            {/* TODO: 회원 탈퇴 기능 */}
-            <button type='button'>회원 탈퇴</button>
+            <button type='button' onClick={handleWithdrawlClick}>
+              회원 탈퇴
+            </button>
           </li>
         </ul>
       </div>
