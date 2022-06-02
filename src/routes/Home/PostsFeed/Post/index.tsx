@@ -17,6 +17,7 @@ const Post = ({ post }: { post: IPost }) => {
   const navigate = useNavigate()
   const isLoggedIn = useRecoilValue(isLoggedInState)
   const currentUser = useRecoilValue(currentUserState)
+  const [optionsView, setIsOptionsView] = useState(false)
   const [commentsView, setCommentsView] = useState(false)
 
   // TODO: 디바운싱
@@ -42,7 +43,11 @@ const Post = ({ post }: { post: IPost }) => {
     }
   }
 
-  const handleCommentsView = () => {
+  const handleOptionClick = () => {
+    setIsOptionsView((prev) => !prev)
+  }
+
+  const handleCommentsClick = () => {
     setCommentsView((prev) => !prev)
   }
 
@@ -60,7 +65,23 @@ const Post = ({ post }: { post: IPost }) => {
           <div className={styles.user}>{post.userName}</div>
           <div className={styles.createdAt}>{new Date(post.createdAt).toString()}</div>
         </div>
-        {post.userId === currentUser?.uid && <OptionsIcon />}
+        {post.userId === currentUser?.uid && (
+          <div className={styles.optionBtn}>
+            <button type='button' onClick={handleOptionClick}>
+              <OptionsIcon />
+            </button>
+            {optionsView && (
+              <ul className={styles.options}>
+                <li>
+                  <button type='button'>수정</button>
+                </li>
+                <li>
+                  <button type='button'>삭제</button>
+                </li>
+              </ul>
+            )}
+          </div>
+        )}
       </div>
       <div className={styles.content}>
         <p className={styles.contentText}>{post.content.text}</p>
@@ -71,7 +92,7 @@ const Post = ({ post }: { post: IPost }) => {
           {post.like?.includes(currentUser?.uid || '') ? <LikePressedIcon /> : <LikeUnpressedIcon />}
         </button>
         <div>{post.like?.length || 0}</div>
-        <button type='button' onClick={handleCommentsView}>
+        <button type='button' onClick={handleCommentsClick}>
           <CommentIcon />
         </button>
         <div>{post.comments?.length || 0}</div>

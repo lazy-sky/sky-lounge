@@ -27,6 +27,31 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 12px;
+
+    .optionBtn {
+      position: relative;
+    }
+
+    .options {
+      position: absolute;
+      top: 0;
+      right: 24px;
+      border: 1px solid $LINE03;
+      box-shadow: 1px 1px 4px rgba(0, 0, 0, 10%);
+
+      li {
+        @include flag;
+        width: 60px;
+        padding: 8px;
+        color: $TITLE02;
+        text-align: center;
+        border-bottom: 1px solid $LINE03;
+
+        &:last-child {
+          border: none;
+        }
+      }
+    }
   }
 
   .user {
