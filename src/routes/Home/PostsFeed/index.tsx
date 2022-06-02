@@ -1,9 +1,9 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore'
 
 import { myDb } from 'myFirebase'
 import { IPost } from 'types/post'
-import Post from './Post'
+import PostList from 'components/PostList'
 
 import styles from './postsFeed.module.scss'
 
@@ -24,18 +24,11 @@ const PostsFeed = () => {
     })
   }, [])
 
-  const PostList = useMemo(
-    () => (
-      <ul className={styles.postList}>
-        {posts.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
-      </ul>
-    ),
-    [posts]
+  return (
+    <div className={styles.postsFeed}>
+      <PostList posts={posts} />
+    </div>
   )
-
-  return <div className={styles.postsFeed}>{PostList}</div>
 }
 
 export default PostsFeed

@@ -1,4 +1,4 @@
-import { useState, ChangeEvent, FormEvent, MouseEvent, useMemo } from 'react'
+import { useState, ChangeEvent, FormEvent, MouseEvent } from 'react'
 import { useRecoilState } from 'recoil'
 import { collection, onSnapshot, query, where } from 'firebase/firestore'
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth'
@@ -8,7 +8,7 @@ import { auth, myDb } from 'myFirebase'
 import { IComment, IPost } from 'types/post'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
-import Post from 'routes/Home/PostsFeed/Post'
+
 import { GithubIcon, GoogleIcon } from 'assets/svgs'
 
 import styles from './myPage.module.scss'
@@ -52,18 +52,6 @@ const Profile = () => {
     setNewDisplayname(currentUser?.displayName || '')
     getMyWritings()
   })
-
-  // TODO: PostList, Post 공동 컴포넌트로 관리
-  const PostList = useMemo(
-    () => (
-      <ul className={styles.postList}>
-        {myPosts?.map((post) => (
-          <Post key={post.id} post={post} />
-        ))}
-      </ul>
-    ),
-    [myPosts]
-  )
 
   const handleSocialLoginClick = async (event: MouseEvent<HTMLButtonElement>) => {
     const {

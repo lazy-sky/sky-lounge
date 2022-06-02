@@ -1,19 +1,19 @@
 import { useState } from 'react'
+import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
+import Swal from 'sweetalert2'
 
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
 import { myDb } from 'myFirebase'
-import Comments from './Comments'
+import Comments from 'components/CommentList'
 import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
-
-import styles from './post.module.scss'
 import noimage from './noimage.jpg'
-import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
 
-const Post = ({ post }: { post: IPost }) => {
+import styles from './postItem.module.scss'
+
+const PostItem = ({ post }: { post: IPost }) => {
   const navigate = useNavigate()
   const isLoggedIn = useRecoilValue(isLoggedInState)
   const currentUser = useRecoilValue(currentUserState)
@@ -31,8 +31,6 @@ const Post = ({ post }: { post: IPost }) => {
 
     const targetRef = doc(myDb, 'posts', postId)
     const targetDoc = await getDoc(targetRef)
-
-    console.log(targetDoc.data()?.userId)
 
     if (targetDoc.data()?.like.includes(currentUser?.uid)) {
       await updateDoc(targetRef, {
@@ -123,4 +121,4 @@ const Post = ({ post }: { post: IPost }) => {
   )
 }
 
-export default Post
+export default PostItem

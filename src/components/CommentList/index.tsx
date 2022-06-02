@@ -5,11 +5,11 @@ import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firesto
 import { myDb } from 'myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
-import noimage from '../noimage.jpg'
+import noimage from './noimage.jpg'
 
-import styles from './comments.module.scss'
+import styles from './commentList.module.scss'
 
-const Comments = ({ post }: { post: IPost }) => {
+const CommentList = ({ post }: { post: IPost }) => {
   const isLoggedIn = useRecoilValue(isLoggedInState)
   const currentUser = useRecoilValue(currentUserState)
   const [text, setText] = useState('')
@@ -78,4 +78,4 @@ const Comments = ({ post }: { post: IPost }) => {
   )
 }
 
-export default Comments
+export default CommentList
