@@ -4,6 +4,11 @@
   li {
     @include body8;
     padding: 16px 0;
+    border-bottom: 1px solid $LINE02;
+
+    &:first-child {
+      border-top: 1px solid $LINE02;
+    }
 
     .commenter {
       display: flex;
