@@ -68,6 +68,7 @@ const CreatePost = () => {
       userId: currentUser?.uid,
       userName: currentUser?.displayName,
       createdAt: Date.now(),
+      updatedAt: Date.now(),
       content: { text, imgSrc },
       tags: selectedTags,
       like: [],
@@ -82,6 +83,7 @@ const CreatePost = () => {
     const targetRef = doc(myDb, 'posts', paramId)
 
     await updateDoc(targetRef, {
+      updatedAt: Date.now(),
       content: { text, imgSrc },
       tags: selectedTags,
     })

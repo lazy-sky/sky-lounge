@@ -3,6 +3,7 @@ export interface IPost {
   userId: string
   userName: string
   createdAt: string
+  updatedAt: string
   content: {
     text: string
     imgSrc?: string
