@@ -59,6 +59,10 @@ const Post = ({ post }: { post: IPost }) => {
     })
   }
 
+  const handleEditClick = (postId: string) => {
+    navigate(`/write/${postId}`)
+  }
+
   return (
     <li key={post.id} className={styles.post}>
       <ul className={styles.tags}>
@@ -81,7 +85,9 @@ const Post = ({ post }: { post: IPost }) => {
             {optionsView && (
               <ul className={styles.options}>
                 <li>
-                  <button type='button'>수정</button>
+                  <button type='button' onClick={() => handleEditClick(post.id)}>
+                    수정
+                  </button>
                 </li>
                 <li>
                   <button type='button' onClick={() => handleDeleteClick(post.id)}>

@@ -1,8 +1,7 @@
-/* eslint-disable react/no-children-prop */
-import { ChangeEvent, useCallback, useMemo, useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { addDoc, collection } from 'firebase/firestore'
+import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
 import cx from 'classnames'
 
 import { myDb } from 'myFirebase'
@@ -12,15 +11,30 @@ import { CameraIcon } from 'assets/svgs'
 
 import styles from './createPost.module.scss'
 
-// TODO: 수정 모드 추가
-
 const CreatePost = () => {
   const navigate = useNavigate()
+  const location = useLocation()
+  const { pathname } = location
+  const path = pathname.split('/')
+  const paramId = path[path.length - 1]
+
   const currentUser = useRecoilValue(currentUserState)
   const [text, setText] = useState('')
   const [imgSrc, setImgSrc] = useState('')
   const tags = ['태그1', '태그2', '태그3', '태그4', '태그5']
   const [selectedTags, setSelectedTags] = useState<string[]>([])
+
+  useEffect(() => {
+    if (!paramId || paramId === 'write') return
+    ;(async () => {
+      const targetRef = doc(myDb, 'posts', paramId)
+      const targetDoc = await getDoc(targetRef)
+
+      setText(targetDoc.data()?.content.text)
+      setImgSrc(targetDoc.data()?.content.imgSrc)
+      setSelectedTags(targetDoc.data()?.tags)
+    })()
+  }, [paramId])
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value)
@@ -62,7 +76,19 @@ const CreatePost = () => {
 
     setText('')
     navigate('/')
-  }, [currentUser, imgSrc, navigate, selectedTags, text])
+  }, [currentUser, imgSrc, selectedTags, text, navigate])
+
+  const handleUpdateClick = useCallback(async () => {
+    const targetRef = doc(myDb, 'posts', paramId)
+
+    await updateDoc(targetRef, {
+      content: { text, imgSrc },
+      tags: selectedTags,
+    })
+
+    setText('')
+    navigate('/')
+  }, [imgSrc, paramId, selectedTags, text, navigate])
 
   const SubmitButton = useMemo(
     () => (
@@ -73,9 +99,26 @@ const CreatePost = () => {
     [handleCreateClick]
   )
 
+  const UpdateButton = useMemo(
+    () => (
+      <button type='button' onClick={handleUpdateClick} className={styles.submitBtn}>
+        수정하기
+      </button>
+    ),
+    [handleUpdateClick]
+  )
+
   return (
     <div className={styles.container}>
-      <PageHeader title='게시물 만들기' hasBackBtn children={SubmitButton} />
+      {!paramId || paramId === 'write' ? (
+        <PageHeader title='게시물 만들기' hasBackBtn>
+          {SubmitButton}
+        </PageHeader>
+      ) : (
+        <PageHeader title='게시물 수정하기' hasBackBtn>
+          {UpdateButton}
+        </PageHeader>
+      )}
       <ul className={styles.tags}>
         {tags.map((tag) => (
           <li key={tag} className={cx(styles.tag, selectedTags.includes(tag) && styles.active)}>
