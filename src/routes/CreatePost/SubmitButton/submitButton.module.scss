@@ -1,0 +1,6 @@
+@import '/src/styles/index';
+
+.submitBtn {
+  @include body6;
+  color: $BLUE02;
+}

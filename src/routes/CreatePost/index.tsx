@@ -1,4 +1,4 @@
-import { ChangeEvent, useCallback, useEffect, useMemo, useState } from 'react'
+import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
@@ -7,6 +7,7 @@ import cx from 'classnames'
 import { myDb } from 'myFirebase'
 import { currentUserState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
+import SubmitButton from './SubmitButton'
 import { CameraIcon } from 'assets/svgs'
 
 import styles from './createPost.module.scss'
@@ -17,6 +18,8 @@ const CreatePost = () => {
   const { pathname } = location
   const path = pathname.split('/')
   const paramId = path[path.length - 1]
+  const isUpdateMode = !(!paramId || paramId === 'write')
+  const pageTitle = isUpdateMode ? '게시물 만들기' : '게시글 수정하기'
 
   const currentUser = useRecoilValue(currentUserState)
   const [text, setText] = useState('')
@@ -25,7 +28,7 @@ const CreatePost = () => {
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   useEffect(() => {
-    if (!paramId || paramId === 'write') return
+    if (!isUpdateMode) return
     ;(async () => {
       const targetRef = doc(myDb, 'posts', paramId)
       const targetDoc = await getDoc(targetRef)
@@ -34,7 +37,7 @@ const CreatePost = () => {
       setImgSrc(targetDoc.data()?.content.imgSrc)
       setSelectedTags(targetDoc.data()?.tags)
     })()
-  }, [paramId])
+  }, [isUpdateMode, paramId])
 
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     setText(event.target.value)
@@ -92,35 +95,15 @@ const CreatePost = () => {
     navigate('/')
   }, [imgSrc, paramId, selectedTags, text, navigate])
 
-  const SubmitButton = useMemo(
-    () => (
-      <button type='button' onClick={handleCreateClick} className={styles.submitBtn}>
-        남기기
-      </button>
-    ),
-    [handleCreateClick]
-  )
-
-  const UpdateButton = useMemo(
-    () => (
-      <button type='button' onClick={handleUpdateClick} className={styles.submitBtn}>
-        수정하기
-      </button>
-    ),
-    [handleUpdateClick]
-  )
-
   return (
     <div className={styles.container}>
-      {!paramId || paramId === 'write' ? (
-        <PageHeader title='게시물 만들기' hasBackBtn>
-          {SubmitButton}
-        </PageHeader>
-      ) : (
-        <PageHeader title='게시물 수정하기' hasBackBtn>
-          {UpdateButton}
-        </PageHeader>
-      )}
+      <PageHeader title={pageTitle} hasBackBtn>
+        {isUpdateMode ? (
+          <SubmitButton text='수정하기' onClick={handleUpdateClick} />
+        ) : (
+          <SubmitButton text='남기기' onClick={handleCreateClick} />
+        )}
+      </PageHeader>
       <ul className={styles.tags}>
         {tags.map((tag) => (
           <li key={tag} className={cx(styles.tag, selectedTags.includes(tag) && styles.active)}>
