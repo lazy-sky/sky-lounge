@@ -14,8 +14,11 @@ import PostList from 'components/PostList'
 import CommentList from 'components/CommentList'
 
 import styles from './myPage.module.scss'
+import { useNavigate } from 'react-router-dom'
+import Swal from 'sweetalert2'
 
 const Profile = () => {
+  const navigate = useNavigate()
   const setIsLoggedIn = useSetRecoilState(isLoggedInState)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
   // TODO: 랜덤 닉네임 생성
@@ -86,6 +89,8 @@ const Profile = () => {
     setIsLoggedIn(false)
     setCurrentUser(null)
     signOut(auth)
+    Swal.fire('성공적으로 로그아웃 되었습니다.')
+    navigate('/')
   }
 
   return (

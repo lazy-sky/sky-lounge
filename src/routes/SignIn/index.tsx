@@ -1,17 +1,26 @@
 import { MouseEvent } from 'react'
 import { useSetRecoilState } from 'recoil'
+import { useNavigate } from 'react-router-dom'
 import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { cloneDeep } from 'lodash'
 
 import { auth } from 'myFirebase'
-import { cloneDeep } from 'lodash'
-import { currentUserState } from 'store/atom'
+import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
 import { GithubIcon, GoogleIcon } from 'assets/svgs'
 
 import styles from './signIn.module.scss'
 
 const SignIn = () => {
+  const navigate = useNavigate()
+  const setIsLoggedIn = useSetRecoilState(isLoggedInState)
   const setCurrentUser = useSetRecoilState(currentUserState)
+
+  const processSignIn = () => {
+    setCurrentUser(cloneDeep(auth.currentUser))
+    setIsLoggedIn(true)
+    navigate(-1)
+  }
 
   const handleSocialLoginClick = async (event: MouseEvent<HTMLButtonElement>) => {
     const {
@@ -20,13 +29,13 @@ const SignIn = () => {
 
     if (name === 'google') {
       await signInWithPopup(auth, new GoogleAuthProvider())
+      processSignIn()
     }
 
     if (name === 'github') {
       await signInWithPopup(auth, new GithubAuthProvider())
+      processSignIn()
     }
-
-    setCurrentUser(cloneDeep(auth.currentUser))
   }
 
   return (
