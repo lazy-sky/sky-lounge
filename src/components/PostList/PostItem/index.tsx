@@ -73,11 +73,14 @@ const PostItem = ({ post }: { post: IPost }) => {
         ))}
       </ul>
       <div className={styles.metaInfo}>
-        <div>
-          <div className={styles.user}>{post.user.name}</div>
-          <div className={styles.createdAt}>
-            {dayjs(post.createdAt).format('YYYY-MM-DD')}
-            {post.createdAt !== post.updatedAt && '(수정됨)'}
+        <div className={styles.writer}>
+          <img src={post.user.profileImg} alt='' />
+          <div>
+            <div className={styles.user}>{post.user.name}</div>
+            <div className={styles.createdAt}>
+              {dayjs(post.createdAt).format('YYYY-MM-DD')}
+              {post.createdAt !== post.updatedAt && '(수정됨)'}
+            </div>
           </div>
         </div>
         {post.user.id === currentUser?.uid && (

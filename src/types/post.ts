@@ -3,6 +3,7 @@ export interface IPost {
   user: {
     id: string
     name: string
+    profileImg: string
   }
   createdAt: string
   updatedAt: string
