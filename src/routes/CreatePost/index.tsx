@@ -24,7 +24,7 @@ const CreatePost = () => {
   const currentUser = useRecoilValue(currentUserState)
   const [text, setText] = useState('')
   const [imgSrc, setImgSrc] = useState('')
-  const tags = ['태그1', '태그2', '태그3', '태그4', '태그5']
+  const tags = ['자랑', '스터디', '구인', '홍보', '공지', '챌린지', '잡담', '일상', '코유', '코무', '기타']
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   useEffect(() => {

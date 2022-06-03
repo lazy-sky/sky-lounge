@@ -47,6 +47,7 @@ const WelcomePopup = ({ visible, setVisible }: IWelcomePopup) => {
               <li>⭐익명 채팅⭐</li>
               <li>⭐챌린지⭐</li>
             </ul>
+            <p>문의사항 및 요구사항은 알아서 연락주세요! 계속 개발중입니다.</p>
             <div className={styles.footer}>
               <div>
                 <a href='https://github.com/lazy-sky' target='_blank' rel='noreferrer'>
