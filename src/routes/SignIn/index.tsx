@@ -1,7 +1,7 @@
-import { MouseEvent } from 'react'
-import { useSetRecoilState } from 'recoil'
+import { MouseEvent, useEffect } from 'react'
+import { useRecoilState, useSetRecoilState } from 'recoil'
 import { useNavigate } from 'react-router-dom'
-import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
+import { GithubAuthProvider, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
 import { auth } from 'services/myFirebase'
@@ -13,13 +13,19 @@ import styles from './signIn.module.scss'
 
 const SignIn = () => {
   const navigate = useNavigate()
-  const setIsLoggedIn = useSetRecoilState(isLoggedInState)
+  const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState)
   const setCurrentUser = useSetRecoilState(currentUserState)
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      // TODO: 로그인 처리 중에 잠시 멈춰 있는 것처럼 보일 때 로딩 컴포넌트 띄우기
+      navigate('/')
+    }
+  }, [isLoggedIn, navigate])
 
   const processSignIn = () => {
     setCurrentUser(cloneDeep(auth.currentUser))
     setIsLoggedIn(true)
-    navigate(-1)
   }
 
   const handleSocialLoginClick = async (event: MouseEvent<HTMLButtonElement>) => {
@@ -28,12 +34,13 @@ const SignIn = () => {
     } = event
 
     if (name === 'google') {
-      await signInWithPopup(auth, new GoogleAuthProvider())
+      await signInWithRedirect(auth, new GoogleAuthProvider())
+      document.domain = 'example.com'
       processSignIn()
     }
 
     if (name === 'github') {
-      await signInWithPopup(auth, new GithubAuthProvider())
+      await signInWithRedirect(auth, new GithubAuthProvider())
       processSignIn()
     }
   }
