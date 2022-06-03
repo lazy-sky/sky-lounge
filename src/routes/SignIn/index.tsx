@@ -7,7 +7,7 @@ import { cloneDeep } from 'lodash'
 import { auth } from 'services/myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
-import { GithubIcon, GoogleIcon } from 'assets/svgs'
+import { GithubIcon, GoogleIcon, MeerkatIcon } from 'assets/svgs'
 
 import styles from './signIn.module.scss'
 
@@ -41,7 +41,9 @@ const SignIn = () => {
   return (
     <>
       <PageHeader title='로그인' />
-      <div className={styles.logo}>서비스 로고</div>
+      <div className={styles.logo}>
+        <MeerkatIcon />
+      </div>
       <div className={styles.socialBtns}>
         <button type='button' name='google' onClick={handleSocialLoginClick}>
           <GoogleIcon />
