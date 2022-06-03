@@ -2,4 +2,46 @@
 
 .postsFeed {
   background-color: $SURFACE;
+
+  .options {
+    padding: 16px;
+    background-color: $WHITE;
+
+    .tags {
+      display: grid;
+      grid-template-columns: repeat(6, auto);
+      row-gap: 12px;
+
+      @media screen and (max-width: 430px) {
+        grid-template-columns: repeat(4, 1fr);
+      }
+
+      @media screen and (max-width: 330px) {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .tag {
+        @include body4;
+        width: fit-content;
+        padding: 4px 16px;
+        background-color: $SURFACE;
+
+        &.active {
+          background-color: $BLUE03;
+          border-color: $BLUE03;
+        }
+      }
+    }
+
+    .sort {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      margin-top: 20px;
+
+      .active {
+        color: $BLUE02;
+      }
+    }
+  }
 }
