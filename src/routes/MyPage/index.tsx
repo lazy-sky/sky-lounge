@@ -28,7 +28,6 @@ const MyPage = () => {
   const [postsView, setPostsView] = useState(false)
   const [commentsView, setCommentsView] = useState(false)
 
-  // TODO: service 로직 분리, 다른 곳들도
   useMount(() => {
     setNewDisplayname(currentUser?.displayName || '')
     setMyDataInRealTime('posts', setMyPosts, currentUser!.uid)
