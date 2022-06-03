@@ -3,12 +3,15 @@
 $MAIN_WIDTH: 468px;
 $FOOTER_HEIGHT: 56px;
 
+body {
+  background-color: $SURFACE;
+}
+
 .container {
   max-width: $MAIN_WIDTH;
   min-height: calc(100vh - $FOOTER_HEIGHT);
   margin: 0 auto;
-  border-right: 1px solid $LINE02;
-  border-left: 1px solid $LINE02;
+  background-color: $WHITE;
 }
 
 footer {

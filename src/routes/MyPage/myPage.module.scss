@@ -53,7 +53,7 @@
     @include body7;
     padding: 8px 20px;
     color: $TITLE02;
-    background-color: $SURFACE;
+    border-bottom: 1px solid $LINE02;
   }
 
   ul {

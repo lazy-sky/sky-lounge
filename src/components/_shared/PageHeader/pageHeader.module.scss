@@ -2,9 +2,7 @@
 
 .header {
   position: relative;
-  padding-bottom: 8px;
-  margin: 20px 0;
-  border-bottom: 1px solid $SURFACE;
+  padding: 20px 0;
 
   .title {
     @include heading3;
@@ -14,13 +12,13 @@
 
   .backBtn {
     position: absolute;
-    top: 12px;
+    top: 32px;
     left: 16px;
   }
 
   .children {
     position: absolute;
-    top: 12px;
+    top: 32px;
     right: 16px;
   }
 }

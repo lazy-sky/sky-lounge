@@ -1,6 +1,15 @@
 import { useEffect, useState } from 'react'
 import { Channel as IChannel, DefaultGenerics, StreamChat } from 'stream-chat'
-import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window } from 'stream-chat-react'
+import {
+  Chat,
+  Channel,
+  ChannelHeader,
+  MessageInput,
+  MessageList,
+  Thread,
+  Window,
+  CustomStyles,
+} from 'stream-chat-react'
 
 import { getRandomNickname } from 'utils'
 import PageHeader from 'components/_shared/PageHeader'
@@ -31,10 +40,15 @@ const ChatRoom = () => {
     }
   }, [])
 
+  const customStyles: CustomStyles = {
+    '--primary-color': '#00a4a4',
+    '--grey-gainsboro': 'white',
+  }
+
   return (
     <div>
       <PageHeader title='전체 채팅방' />
-      <Chat client={chatClient}>
+      <Chat client={chatClient} customStyles={customStyles}>
         <Channel channel={channel}>
           <Window>
             <ChannelHeader />
