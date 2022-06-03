@@ -1,21 +1,21 @@
 import { useState, ChangeEvent, FormEvent } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
+import { useNavigate } from 'react-router-dom'
+import { useMount } from 'react-use'
 import { deleteUser, signOut, updateProfile, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
-import { useMount } from 'react-use'
+import Swal from 'sweetalert2'
 import cx from 'classnames'
 
 import { auth } from 'services/myFirebase'
 import { IComment, IPost } from 'types/post'
+import { setMyDataInRealTime } from 'services/getData'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
 import PostList from 'components/PostList'
 import CommentList from 'components/CommentList'
 
 import styles from './myPage.module.scss'
-import { useNavigate } from 'react-router-dom'
-import Swal from 'sweetalert2'
-import { setMyCommentsInRealTime, setMyPostsInRealTime } from 'services/getData'
 
 const MyPage = () => {
   const navigate = useNavigate()
@@ -31,8 +31,8 @@ const MyPage = () => {
   // TODO: service 로직 분리, 다른 곳들도
   useMount(() => {
     setNewDisplayname(currentUser?.displayName || '')
-    setMyPostsInRealTime(setMyPosts, currentUser!.uid)
-    setMyCommentsInRealTime(setMyComments, currentUser!.uid)
+    setMyDataInRealTime('posts', setMyPosts, currentUser!.uid)
+    setMyDataInRealTime('comments', setMyComments, currentUser!.uid)
   })
 
   const handleDisplayNameChange = (event: ChangeEvent<HTMLInputElement>) => {
