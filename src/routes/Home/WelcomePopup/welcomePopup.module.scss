@@ -1,0 +1,50 @@
+@import '/src/styles/index';
+
+.popup {
+  position: absolute;
+  z-index: $POPUP;
+  width: 100%;
+  height: 100%;
+  padding: 10%;
+  text-align: center;
+  background: rgba(0, 0, 0, 10%);
+
+  .wrapper {
+    padding: 48px 16px 16px;
+    margin-bottom: 16px;
+    background-color: $WHITE;
+  }
+
+  h3 {
+    @include heading5;
+    margin-bottom: 12px;
+  }
+
+  p {
+    @include body1;
+    margin: 16px 0;
+  }
+
+  ul {
+    @include body2;
+  }
+
+  .footer {
+    @include body7;
+    margin-top: 16px;
+
+    svg {
+      width: 20px;
+    }
+  }
+
+  .closeBtns {
+    display: flex;
+    gap: 12px;
+    justify-content: flex-end;
+
+    button {
+      @include body3;
+    }
+  }
+}
