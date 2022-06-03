@@ -11,6 +11,7 @@ import SubmitButton from './SubmitButton'
 import { CameraIcon } from 'assets/svgs'
 
 import styles from './createPost.module.scss'
+import { tags } from 'routes/Home/PostsFeed'
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -24,7 +25,6 @@ const CreatePost = () => {
   const currentUser = useRecoilValue(currentUserState)
   const [text, setText] = useState('')
   const [imgSrc, setImgSrc] = useState('')
-  const tags = ['자랑', '스터디', '구인', '홍보', '공지', '챌린지', '잡담', '일상', '코유', '코무', '기타']
   const [selectedTags, setSelectedTags] = useState<string[]>([])
 
   useEffect(() => {

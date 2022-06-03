@@ -14,12 +14,15 @@ import noimage from '../../../assets/svgs/noimage.svg'
 
 import styles from './postItem.module.scss'
 
-const PostItem = ({ post }: { post: IPost }) => {
+const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) => {
   const navigate = useNavigate()
   const isLoggedIn = useRecoilValue(isLoggedInState)
   const currentUser = useRecoilValue(currentUserState)
   const [optionsView, setIsOptionsView] = useState(false)
   const [commentsView, setCommentsView] = useState(false)
+
+  const isTagmatched = filterTags?.filter((x) => post.tags?.includes(x)).length
+  if ((filterTags?.length || 0) > 0 && isTagmatched === 0) return null
 
   // TODO: 디바운싱 + Optimistic UI
   const handleLikeToggle = async (postId: string) => {
