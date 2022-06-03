@@ -5,7 +5,7 @@ import { IComment, IPost } from 'types/post'
 import { myDb } from './myFirebase'
 
 export const setMyPostsInRealTime = (setter: Dispatch<React.SetStateAction<IPost[]>>, userId: string) => {
-  const postsQuery = query(collection(myDb, 'posts'), where('userId', '==', userId))
+  const postsQuery = query(collection(myDb, 'posts'), where('user.id', '==', userId))
 
   onSnapshot(postsQuery, (snapshot) => {
     const postList = snapshot.docs.map(

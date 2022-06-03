@@ -68,8 +68,7 @@ const CreatePost = () => {
     if (text === '') return
 
     await addDoc(collection(myDb, 'posts'), {
-      userId: currentUser?.uid,
-      userName: currentUser?.displayName,
+      user: { id: currentUser?.uid, name: currentUser?.displayName },
       createdAt: Date.now(),
       updatedAt: Date.now(),
       content: { text, imgSrc },

@@ -1,7 +1,9 @@
 export interface IPost {
   id: string
-  userId: string
-  userName: string
+  user: {
+    id: string
+    name: string
+  }
   createdAt: string
   updatedAt: string
   content: {
@@ -13,6 +15,7 @@ export interface IPost {
   comments?: {
     id: string
     user: {
+      id: string
       name: string
       profileImg: string
     }

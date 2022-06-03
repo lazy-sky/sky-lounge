@@ -74,13 +74,13 @@ const PostItem = ({ post }: { post: IPost }) => {
       </ul>
       <div className={styles.metaInfo}>
         <div>
-          <div className={styles.user}>{post.userName}</div>
+          <div className={styles.user}>{post.user.name}</div>
           <div className={styles.createdAt}>
             {dayjs(post.createdAt).format('YYYY-MM-DD')}
             {post.createdAt !== post.updatedAt && '(수정됨)'}
           </div>
         </div>
-        {post.userId === currentUser?.uid && (
+        {post.user.id === currentUser?.uid && (
           <div className={styles.optionBtn}>
             <button type='button' onClick={handleOptionClick}>
               <OptionsIcon />
