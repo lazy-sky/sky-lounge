@@ -1,5 +1,4 @@
-import { useState } from 'react'
-import { useMount } from 'react-use'
+import { useEffect, useState } from 'react'
 import { Channel as IChannel, DefaultGenerics, StreamChat } from 'stream-chat'
 import { Chat, Channel, ChannelHeader, MessageInput, MessageList, Thread, Window } from 'stream-chat-react'
 
@@ -13,7 +12,7 @@ const chatClient = StreamChat.getInstance(process.env.REACT_APP_STREAM_KEY!)
 const ChatRoom = () => {
   const [channel, setChannel] = useState<IChannel<DefaultGenerics>>()
 
-  useMount(() => {
+  useEffect(() => {
     ;(async () => {
       await chatClient.setGuestUser({
         id: String(Math.floor(Math.random() * Date.now())),
@@ -30,7 +29,7 @@ const ChatRoom = () => {
     return () => {
       chatClient.disconnectUser()
     }
-  })
+  }, [])
 
   return (
     <div>
