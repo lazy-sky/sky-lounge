@@ -16,13 +16,12 @@ import PostList from 'components/PostList'
 import CommentList from 'components/CommentList'
 
 import styles from './myPage.module.scss'
-import { getRandomNickname } from './utils'
+import { getRandomNickname } from '../../utils'
 
 const MyPage = () => {
   const navigate = useNavigate()
   const setIsLoggedIn = useSetRecoilState(isLoggedInState)
   const [currentUser, setCurrentUser] = useRecoilState(currentUserState)
-  // TODO: 랜덤 닉네임 생성
   const [newDisplayName, setNewDisplayname] = useState(currentUser?.displayName || '')
   const [myPosts, setMyPosts] = useState<IPost[]>([])
   const [myComments, setMyComments] = useState<IComment[]>([])
