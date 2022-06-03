@@ -26,6 +26,7 @@ const WelcomePopup = ({ visible, setVisible }: IWelcomePopup) => {
   }
   const handleNeverClick = () => {
     localStorage.setItem('skyLoungeWelcome', 'no')
+    setVisible(false)
   }
 
   return (
