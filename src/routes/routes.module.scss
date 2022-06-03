@@ -15,6 +15,7 @@ footer {
   position: sticky;
   bottom: 0;
   left: calc((100vw - $MAIN_WIDTH) / 2);
+  z-index: $GNB;
   max-width: $MAIN_WIDTH;
   height: $FOOTER_HEIGHT;
   background-color: $WHITE;

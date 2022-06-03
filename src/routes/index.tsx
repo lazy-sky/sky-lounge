@@ -32,18 +32,6 @@ const App = () => {
     })
   })
 
-  // TODO: route
-  // - Home: 게시글 피드
-  // - ChatRoom: 전체 채팅방
-  // - CreatePost: 글쓰기
-  // - Plaza: 만남의 광장(스터디 모집 등)
-  //  - 스터디
-  //  - 프로젝트
-  //  - 구인
-  //  - 기타
-  // - MyPage: 유저(회원가입, 로그인 및 프로필 변경)
-  // Copyright 및 Maker
-
   return (
     <QueryClientProvider client={queryClient}>
       <div className={styles.container}>
