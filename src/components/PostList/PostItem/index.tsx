@@ -10,7 +10,7 @@ import { IPost } from 'types/post'
 import { myDb } from 'services/myFirebase'
 import CommentsWrapper from 'components/CommentsWrapper'
 import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
-import noimage from './noimage.jpg'
+import noimage from '../../../assets/svgs/noimage.svg'
 
 import styles from './postItem.module.scss'
 
@@ -74,7 +74,7 @@ const PostItem = ({ post }: { post: IPost }) => {
       </ul>
       <div className={styles.metaInfo}>
         <div className={styles.writer}>
-          <img src={post.user.profileImg} alt='' />
+          <img src={post.user.profileImg || noimage} alt='' />
           <div>
             <div className={styles.user}>{post.user.name}</div>
             <div className={styles.createdAt}>

@@ -5,7 +5,7 @@ import { addDoc, arrayUnion, collection, doc, updateDoc } from 'firebase/firesto
 import { myDb } from 'services/myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
-import noimage from './noimage.jpg'
+import noimage from '../../assets/svgs/noimage.svg'
 
 import styles from './commentsWrapper.module.scss'
 import CommentList from 'components/CommentList'
