@@ -16,6 +16,7 @@ import PostList from 'components/PostList'
 import CommentList from 'components/CommentList'
 
 import styles from './myPage.module.scss'
+import { getRandomNickname } from './utils'
 
 const MyPage = () => {
   const navigate = useNavigate()
@@ -36,6 +37,10 @@ const MyPage = () => {
 
   const handleDisplayNameChange = (event: ChangeEvent<HTMLInputElement>) => {
     setNewDisplayname(event.target.value)
+  }
+
+  const handleRandomNicknameClick = () => {
+    setNewDisplayname(getRandomNickname())
   }
 
   const handleMyPostsClick = () => {
@@ -92,6 +97,9 @@ const MyPage = () => {
           value={newDisplayName}
           onChange={handleDisplayNameChange}
         />
+        <button type='button' onClick={handleRandomNicknameClick}>
+          랜덤 닉네임 생성
+        </button>
         {currentUser?.displayName !== newDisplayName && <button type='submit'>변경</button>}
       </form>
       <div className={styles.myWritings}>
