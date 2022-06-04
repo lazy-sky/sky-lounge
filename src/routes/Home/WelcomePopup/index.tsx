@@ -40,7 +40,7 @@ const WelcomePopup = ({ visible, setVisible }: IWelcomePopup) => {
             </a>
             <p>Sky Lounge에서 할 수 있는 것!</p>
             <ul>
-              <li>⭐프로젝트 자랑하기⭐</li>
+              <li>⭐프로젝트 자랑⭐</li>
               <li>⭐스터디 모집⭐</li>
               <li>⭐동료 모집⭐</li>
               <li>⭐각종 홍보⭐</li>
