@@ -5,9 +5,9 @@ import cx from 'classnames'
 import { IPost } from 'types/post'
 import { setPostsInRealTime } from 'services/getData'
 import PostList from 'components/PostList'
+import Loading from 'components/_shared/Loading'
 
 import styles from './postsFeed.module.scss'
-import Loading from 'components/_shared/Loading'
 
 export const tags = ['자랑', '스터디', '구인', '홍보', '공지', '챌린지', '잡담', '일상', '코유', '코무', '기타']
 
@@ -30,6 +30,7 @@ const PostsFeed = () => {
     setIsLoading((_) => false)
   }, [posts])
 
+  // TODO: 유저 피드백, 좋아요순 화면에서 좋아요를 눌렀을 때 화면이 최신순 화면으로 이동하는건가요..?
   const handleSortByLatestSelect = () => {
     setPosts((prev) => [...prev.sort((a, b) => Number(b.createdAt) - Number(a.createdAt))])
     setIsSortedByLateset(true)
@@ -69,7 +70,11 @@ const PostsFeed = () => {
           </button>
         </div>
       </div>
-      {isLoading ? <Loading type='spinningBubbles' /> : <PostList posts={posts} filterTags={filterTags} />}
+      {isLoading ? (
+        <Loading type='spinningBubbles' />
+      ) : (
+        <PostList posts={posts} isSortedByLatest={isSortedByLatest} filterTags={filterTags} />
+      )}
     </div>
   )
 }

@@ -19,6 +19,7 @@ https://skylounge-lazysky.netlify.app/
   - 글 작성
   - 사진 첨부
   - 태그 추가
+- 게시글 수정 및 삭제(회원)
 - 게시글 좋아요(회원)
 
 - 댓글 열람
