@@ -1,4 +1,3 @@
-import { useMemo } from 'react'
 import { IPost } from 'types/post'
 import PostItem from './PostItem'
 
@@ -11,14 +10,14 @@ interface IPostList {
 }
 
 const PostList = ({ posts, isSortedByLatest, filterTags }: IPostList) => {
-  const sortedPosts = useMemo(() => posts?.sort((a, b) => (b.like?.length || 0) - (a.like?.length || 0)), [posts])
-
   if (!isSortedByLatest) {
     return (
       <ul className={styles.postList}>
-        {sortedPosts.map((post) => (
-          <PostItem key={post.id} post={post} filterTags={filterTags} />
-        ))}
+        {posts
+          .sort((a, b) => (b.like?.length || 0) - (a.like?.length || 0))
+          .map((post) => (
+            <PostItem key={post.id} post={post} filterTags={filterTags} />
+          ))}
       </ul>
     )
   }

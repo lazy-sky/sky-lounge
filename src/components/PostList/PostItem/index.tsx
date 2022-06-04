@@ -81,7 +81,7 @@ const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) 
           <div>
             <div className={styles.user}>{post.user.name}</div>
             <div className={styles.createdAt}>
-              {dayjs(post.createdAt).format('YYYY-MM-DD')}
+              {dayjs(post.createdAt).format('YYYY년 MM월 D일 hh시 m분')}
               {post.createdAt !== post.updatedAt && '(수정됨)'}
             </div>
           </div>
