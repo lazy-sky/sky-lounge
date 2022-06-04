@@ -4,14 +4,15 @@
   position: absolute;
   z-index: $POPUP;
   width: 100%;
-  height: 100%;
+  min-height: 100%;
   padding: 10%;
   text-align: center;
   background: rgba(0, 0, 0, 70%);
 
   .wrapper {
+    max-width: 500px;
     padding: 48px 16px 16px;
-    margin-bottom: 16px;
+    margin: 0 auto 16px;
     background-color: $WHITE;
   }
 
@@ -42,6 +43,7 @@
     display: flex;
     gap: 12px;
     justify-content: flex-end;
+    margin-top: 20px;
 
     button {
       @include body1;

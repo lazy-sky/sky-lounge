@@ -57,14 +57,14 @@ const WelcomePopup = ({ visible, setVisible }: IWelcomePopup) => {
               </div>
               <div>ⓒ 2022. @lazy-sky. all rights reserved.</div>
             </div>
-          </div>
-          <div className={styles.closeBtns}>
-            <button type='button' onClick={handleNeverClick}>
-              다시 보지 않기
-            </button>
-            <button type='button' onClick={handleCloseClick}>
-              닫기
-            </button>
+            <div className={styles.closeBtns}>
+              <button type='button' onClick={handleNeverClick}>
+                다시 보지 않기
+              </button>
+              <button type='button' onClick={handleCloseClick}>
+                닫기
+              </button>
+            </div>
           </div>
         </div>
       )}
