@@ -1,0 +1,9 @@
+@import '/src/styles/index';
+
+.loading {
+  background-color: $WHITE;
+
+  > div {
+    margin: 0 auto;
+  }
+}

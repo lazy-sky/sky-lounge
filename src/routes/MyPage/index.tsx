@@ -11,12 +11,12 @@ import { auth } from 'services/myFirebase'
 import { IComment, IPost } from 'types/post'
 import { setMyDataInRealTime } from 'services/getData'
 import { currentUserState, isLoggedInState } from 'store/atom'
+import { getRandomNickname } from '../../utils'
 import PageHeader from 'components/_shared/PageHeader'
 import PostList from 'components/PostList'
 import CommentList from 'components/CommentList'
 
 import styles from './myPage.module.scss'
-import { getRandomNickname } from '../../utils'
 
 const MyPage = () => {
   const navigate = useNavigate()

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useMount } from 'react-use'
 import cx from 'classnames'
 
@@ -7,10 +7,12 @@ import { setPostsInRealTime } from 'services/getData'
 import PostList from 'components/PostList'
 
 import styles from './postsFeed.module.scss'
+import Loading from 'components/_shared/Loading'
 
 export const tags = ['자랑', '스터디', '구인', '홍보', '공지', '챌린지', '잡담', '일상', '코유', '코무', '기타']
 
 const PostsFeed = () => {
+  const [isLoading, setIsLoading] = useState(false)
   const [posts, setPosts] = useState<IPost[]>([])
   const [filterTags, setFilterTags] = useState<string[]>([])
   const [isSortedByLatest, setIsSortedByLateset] = useState(true)
@@ -20,6 +22,13 @@ const PostsFeed = () => {
   useMount(() => {
     setPostsInRealTime(setPosts)
   })
+
+  useEffect(() => {
+    setIsLoading((_) => true)
+    if (posts.length === 0) return
+
+    setIsLoading((_) => false)
+  }, [posts])
 
   const handleSortByLatestSelect = () => {
     setPosts((prev) => [...prev.sort((a, b) => Number(b.createdAt) - Number(a.createdAt))])
@@ -60,7 +69,7 @@ const PostsFeed = () => {
           </button>
         </div>
       </div>
-      <PostList posts={posts} filterTags={filterTags} />
+      {isLoading ? <Loading type='spinningBubbles' /> : <PostList posts={posts} filterTags={filterTags} />}
     </div>
   )
 }

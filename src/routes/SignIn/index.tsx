@@ -1,24 +1,26 @@
-import { MouseEvent, useEffect } from 'react'
+import { MouseEvent, useEffect, useState } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { useNavigate } from 'react-router-dom'
-import { GithubAuthProvider, GoogleAuthProvider, signInWithRedirect } from 'firebase/auth'
+import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
 import { auth } from 'services/myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import PageHeader from 'components/_shared/PageHeader'
+import Loading from 'components/_shared/Loading'
 import { GithubIcon, GoogleIcon, MeerkatIcon } from 'assets/svgs'
 
 import styles from './signIn.module.scss'
+import Swal from 'sweetalert2'
 
 const SignIn = () => {
   const navigate = useNavigate()
+  const [isLoading, setIsLoading] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useRecoilState(isLoggedInState)
   const setCurrentUser = useSetRecoilState(currentUserState)
 
   useEffect(() => {
     if (isLoggedIn) {
-      // TODO: 로그인 처리 중에 잠시 멈춰 있는 것처럼 보일 때 로딩 컴포넌트 띄우기
       navigate('/')
     }
   }, [isLoggedIn, navigate])
@@ -28,19 +30,35 @@ const SignIn = () => {
     setIsLoggedIn(true)
   }
 
+  // TODO: iframe CORS 해결
   const handleSocialLoginClick = async (event: MouseEvent<HTMLButtonElement>) => {
     const {
       currentTarget: { name },
     } = event
 
+    setIsLoading((_) => true)
+
     if (name === 'google') {
-      await signInWithRedirect(auth, new GoogleAuthProvider())
-      document.domain = 'example.com'
+      try {
+        await signInWithPopup(auth, new GoogleAuthProvider())
+      } catch (error) {
+        setIsLoading(false)
+        Swal.fire('로그인에 실패하셨습니다.')
+        return
+      }
+
       processSignIn()
     }
 
     if (name === 'github') {
-      await signInWithRedirect(auth, new GithubAuthProvider())
+      try {
+        await signInWithPopup(auth, new GithubAuthProvider())
+      } catch (error) {
+        setIsLoading(false)
+        Swal.fire('로그인에 실패하셨습니다.')
+        return
+      }
+
       processSignIn()
     }
   }
@@ -48,6 +66,7 @@ const SignIn = () => {
   return (
     <>
       <PageHeader title='로그인' />
+      {isLoading && <Loading type='spinningBubbles' />}
       <div className={styles.logo}>
         <MeerkatIcon />
       </div>

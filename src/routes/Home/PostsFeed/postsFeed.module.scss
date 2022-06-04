@@ -23,8 +23,11 @@
       .tag {
         @include body4;
         width: fit-content;
-        padding: 4px 16px;
         background-color: $SURFACE;
+
+        button {
+          padding: 4px 16px;
+        }
 
         &.active {
           background-color: $BLUE03;
