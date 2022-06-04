@@ -8,7 +8,7 @@ https://skylounge-lazysky.netlify.app/
 
 ## Project Tree
 
-## 화면 예시
+## 화면 예시(기능 설명)
 
 
 ## 구현한 방법과 이유, 어려웠던 점
@@ -19,23 +19,26 @@ https://skylounge-lazysky.netlify.app/
 - 인스타그램
 ## Tech & Libraries
 
-서버 및 API 통신 관련
-- axios
-- cors
-- express
-- react-query
-
 라우팅
 - react-router-dom
+
+중앙 저장소
+- recoil
+
+서버 및 DB
+- firebase
+
+유틸리티
+- lodash
+- react-use
+- react-loading: 로딩 컴포넌트
+- sweetalert2: 알림 컴포넌트
+- dayjs
 
 스타일
 - scss
 - css module
 - classnames
-
-중앙 저장소
-- react-redux
-- redux toolkit
 
 코딩 컨벤션
 - eslint
@@ -43,9 +46,10 @@ https://skylounge-lazysky.netlify.app/
 - stylelint
 
 기타
-- html-react-parser: `dangerouslySetInnerHTML`의 안전한 대체제
-- lodash.escaperegexp: 퍼지 문자열 검색을 위한 정규 표현식
+- stream-chat/stream-chat-react: 채팅 관련 API
 
-## Contributors
+## Contributor
 
-- [김하늘](https://github.com/lazy-sky)
+[김하늘](https://github.com/lazy-sky)
+
+ⓒ 2022. @lazy-sky. all rights reserved.
