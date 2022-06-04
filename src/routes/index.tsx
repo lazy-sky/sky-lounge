@@ -1,6 +1,5 @@
 import { Routes, Route } from 'react-router-dom'
 import { useSetRecoilState } from 'recoil'
-import { QueryClientProvider, QueryClient } from 'react-query'
 import { useMount } from 'react-use'
 import { onAuthStateChanged } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
@@ -19,7 +18,6 @@ import SignIn from './SignIn'
 
 // TODO: 로딩 컴포넌트
 const App = () => {
-  const queryClient = new QueryClient()
   const setIsLoggedIn = useSetRecoilState(isLoggedInState)
   const setCurrentUser = useSetRecoilState(currentUserState)
 
@@ -33,7 +31,7 @@ const App = () => {
   })
 
   return (
-    <QueryClientProvider client={queryClient}>
+    <>
       <div className={styles.container}>
         <Routes>
           <Route path='/' element={<Home />} />
@@ -60,7 +58,7 @@ const App = () => {
       <footer>
         <Navigation />
       </footer>
-    </QueryClientProvider>
+    </>
   )
 }
 
