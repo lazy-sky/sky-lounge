@@ -16,7 +16,6 @@ import styles from './routes.module.scss'
 import ChatRoom from './ChatRoom'
 import SignIn from './SignIn'
 
-// TODO: 로딩 컴포넌트
 const App = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState)
   const setCurrentUser = useSetRecoilState(currentUserState)
