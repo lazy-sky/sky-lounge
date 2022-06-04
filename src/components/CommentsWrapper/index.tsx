@@ -58,7 +58,7 @@ const CommentsWrapper = ({ post }: { post: IPost }) => {
         <div className={styles.commentForm}>
           <img src={noimage} alt='user profile' />
           <div className={styles.createComment}>
-            <input placeholder='가입 사용자만 이용할 수 있습니다.' />
+            <input readOnly placeholder='회원만 댓글을 남길 수 있습니다.' />
             <button type='button'>등록</button>
           </div>
         </div>
