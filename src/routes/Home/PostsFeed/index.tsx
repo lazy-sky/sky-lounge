@@ -30,7 +30,6 @@ const PostsFeed = () => {
     setIsLoading((_) => false)
   }, [posts])
 
-  // TODO: 유저 피드백, 좋아요순 화면에서 좋아요를 눌렀을 때 화면이 최신순 화면으로 이동하는건가요..?
   const handleSortByLatestSelect = () => {
     setPosts((prev) => [...prev.sort((a, b) => Number(b.createdAt) - Number(a.createdAt))])
     setIsSortedByLateset(true)
