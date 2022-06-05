@@ -1,11 +1,11 @@
 import { MouseEvent, useEffect, useState } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { useNavigate } from 'react-router-dom'
-import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 
 import { auth } from 'services/myFirebase'
 import { currentUserState, isLoggedInState } from 'store/atom'
+import { logInWithOAuth } from 'services/auth'
 import PageHeader from 'components/_shared/PageHeader'
 import Loading from 'components/_shared/Loading'
 import { GithubIcon, GoogleIcon, MeerkatIcon } from 'assets/svgs'
@@ -42,29 +42,15 @@ const SignIn = () => {
 
     setIsLoading((_) => true)
 
-    if (name === 'google') {
-      try {
-        await signInWithPopup(auth, new GoogleAuthProvider())
-      } catch (error) {
-        setIsLoading(false)
-        Swal.fire('로그인에 실패하셨습니다.')
-        return
-      }
-
-      processSignIn()
+    try {
+      await logInWithOAuth(name)
+    } catch (error) {
+      setIsLoading(false)
+      Swal.fire('로그인에 실패하셨습니다.')
+      return
     }
 
-    if (name === 'github') {
-      try {
-        await signInWithPopup(auth, new GithubAuthProvider())
-      } catch (error) {
-        setIsLoading(false)
-        Swal.fire('로그인에 실패하셨습니다.')
-        return
-      }
-
-      processSignIn()
-    }
+    processSignIn()
   }
 
   return (
