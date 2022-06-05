@@ -145,7 +145,7 @@
 - 메세지 반응
 - 사진 첨부
 - 이모티콘
-- 
+
 ![chat](https://user-images.githubusercontent.com/47808461/172036372-7be83599-4526-4c6c-90e6-f649c5c5be09.gif)
 
 ### 회원가입 및 로그인
