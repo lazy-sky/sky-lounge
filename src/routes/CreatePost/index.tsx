@@ -1,17 +1,16 @@
 import { ChangeEvent, useCallback, useEffect, useState } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
-import { addDoc, collection, doc, getDoc, updateDoc } from 'firebase/firestore'
 import cx from 'classnames'
 
-import { myDb } from 'services/myFirebase'
 import { currentUserState } from 'store/atom'
+import { tags } from 'routes/Home/PostsFeed'
 import PageHeader from 'components/_shared/PageHeader'
 import SubmitButton from './SubmitButton'
 import { CameraIcon } from 'assets/svgs'
 
 import styles from './createPost.module.scss'
-import { tags } from 'routes/Home/PostsFeed'
+import { createPost, getPost, updatePost } from 'services/data'
 
 const CreatePost = () => {
   const navigate = useNavigate()
@@ -30,12 +29,10 @@ const CreatePost = () => {
   useEffect(() => {
     if (!isUpdateMode) return
     ;(async () => {
-      const targetRef = doc(myDb, 'posts', paramId)
-      const targetDoc = await getDoc(targetRef)
-
-      setText(targetDoc.data()?.content.text)
-      setImgSrc(targetDoc.data()?.content.imgSrc)
-      setSelectedTags(targetDoc.data()?.tags)
+      const post = await getPost(paramId)
+      setText(post?.content.text)
+      setImgSrc(post?.content.imgSrc)
+      setSelectedTags(post?.tags)
     })()
   }, [isUpdateMode, paramId])
 
@@ -67,28 +64,13 @@ const CreatePost = () => {
   const handleCreateClick = useCallback(async () => {
     if (text === '') return
 
-    await addDoc(collection(myDb, 'posts'), {
-      user: { id: currentUser?.uid, name: currentUser?.displayName, profileImg: currentUser?.photoURL },
-      createdAt: Date.now(),
-      updatedAt: Date.now(),
-      content: { text, imgSrc },
-      tags: selectedTags,
-      like: [],
-      comment: [],
-    })
-
+    await createPost(currentUser, { text, imgSrc }, selectedTags)
     setText('')
     navigate('/')
   }, [currentUser, imgSrc, selectedTags, text, navigate])
 
   const handleUpdateClick = useCallback(async () => {
-    const targetRef = doc(myDb, 'posts', paramId)
-
-    await updateDoc(targetRef, {
-      updatedAt: Date.now(),
-      content: { text, imgSrc },
-      tags: selectedTags,
-    })
+    updatePost(paramId, { text, imgSrc }, selectedTags)
 
     setText('')
     navigate('/')

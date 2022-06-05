@@ -9,7 +9,7 @@ import cx from 'classnames'
 
 import { auth } from 'services/myFirebase'
 import { IComment, IPost } from 'types/post'
-import { setMyDataInRealTime } from 'services/getData'
+import { setMyDataInRealTime } from 'services/data'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { getRandomNickname } from '../../utils'
 import PageHeader from 'components/_shared/PageHeader'

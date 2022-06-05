@@ -3,7 +3,7 @@ import { useMount } from 'react-use'
 import cx from 'classnames'
 
 import { IPost } from 'types/post'
-import { setPostsInRealTime } from 'services/getData'
+import { setPostsInRealTime } from 'services/data'
 import PostList from 'components/PostList'
 import Loading from 'components/_shared/Loading'
 
