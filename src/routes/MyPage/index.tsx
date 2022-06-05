@@ -2,7 +2,7 @@ import { useState, ChangeEvent, FormEvent } from 'react'
 import { useRecoilState, useSetRecoilState } from 'recoil'
 import { useNavigate } from 'react-router-dom'
 import { useMount } from 'react-use'
-import { deleteUser, signOut, updateProfile, User } from 'firebase/auth'
+import { deleteUser, User } from 'firebase/auth'
 import { cloneDeep } from 'lodash'
 import Swal from 'sweetalert2'
 import cx from 'classnames'
@@ -17,6 +17,7 @@ import PostList from 'components/PostList'
 import CommentList from 'components/CommentList'
 
 import styles from './myPage.module.scss'
+import { logOut, updateNickname } from 'services/auth'
 
 const MyPage = () => {
   const navigate = useNavigate()
@@ -56,17 +57,14 @@ const MyPage = () => {
     event.preventDefault()
     if (currentUser?.displayName === newDisplayName) return
 
-    await updateProfile(auth.currentUser as User, {
-      displayName: newDisplayName,
-    })
-
+    updateNickname(newDisplayName)
     setCurrentUser(cloneDeep(auth.currentUser))
   }
 
   const handleLogOutClick = () => {
     setIsLoggedIn(false)
     setCurrentUser(null)
-    signOut(auth)
+    logOut()
     Swal.fire('성공적으로 로그아웃 되었습니다.')
     navigate('/')
   }
