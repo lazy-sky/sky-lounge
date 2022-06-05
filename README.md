@@ -169,7 +169,13 @@
 랜덤 닉네임 생성 버튼을 누르면 자동으로 닉네임을 생성합니다.
 변경 버튼을 누르면 바뀐 닉네임이 반영됩니다.
 
+![mypage-nickname](https://user-images.githubusercontent.com/47808461/172036912-28c5f0bf-18f3-4896-aa0f-3fe46d7744ad.gif)
+
 #### 로그아웃 및 회원 탈퇴
+
+마이 페이지 탭에서 로그아웃하거나 계정을 삭제시킬 수 있습니다.
+
+![mypage-signout](https://user-images.githubusercontent.com/47808461/172036953-1c85b65c-039a-4783-b658-81e8feb7bfd2.gif)
 
 ## [회고](./Retrospect.md)
 
