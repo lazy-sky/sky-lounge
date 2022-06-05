@@ -1,13 +1,13 @@
-import { useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import { useRecoilValue } from 'recoil'
 import { arrayRemove, arrayUnion, deleteDoc, doc, getDoc, updateDoc } from 'firebase/firestore'
 import Swal from 'sweetalert2'
-import dayjs from 'dayjs'
 
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { IPost } from 'types/post'
 import { myDb } from 'services/myFirebase'
+import { calculatePassedTime } from './utils'
 import CommentsWrapper from 'components/CommentsWrapper'
 import { CommentIcon, LikePressedIcon, LikeUnpressedIcon, OptionsIcon } from 'assets/svgs'
 import noimage from '../../../assets/svgs/noimage.svg'
@@ -20,9 +20,6 @@ const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) 
   const currentUser = useRecoilValue(currentUserState)
   const [optionsView, setIsOptionsView] = useState(false)
   const [commentsView, setCommentsView] = useState(false)
-
-  const isTagmatched = filterTags?.filter((x) => post.tags?.includes(x)).length
-  if ((filterTags?.length || 0) > 0 && isTagmatched === 0) return null
 
   // TODO: 디바운싱 + Optimistic UI
   const handleLikeToggle = async (postId: string) => {
@@ -39,11 +36,12 @@ const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) 
       await updateDoc(targetRef, {
         like: arrayRemove(currentUser?.uid),
       })
-    } else {
-      await updateDoc(targetRef, {
-        like: arrayUnion(currentUser?.uid),
-      })
+      return
     }
+
+    await updateDoc(targetRef, {
+      like: arrayUnion(currentUser?.uid),
+    })
   }
 
   const handleOptionClick = () => {
@@ -56,31 +54,20 @@ const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) 
 
   const handleDeleteClick = async (postId: string) => {
     Swal.fire({ title: '정말로 삭제하시겠습니까?', showDenyButton: true }).then(async ({ isConfirmed }) => {
-      if (isConfirmed) {
-        await deleteDoc(doc(myDb, 'posts', postId))
-      }
+      if (!isConfirmed) return
+      await deleteDoc(doc(myDb, 'posts', postId))
     })
   }
 
-  const handleEditClick = (postId: string) => {
-    navigate(`/write/${postId}`)
-  }
+  const handleEditClick = useCallback(
+    (postId: string) => {
+      navigate(`/write/${postId}`)
+    },
+    [navigate]
+  )
 
-  const calculatePassedTime = (time: string) => {
-    const passedHour = Math.floor((Date.now() - Number(time)) / 1000 / 60 / 60)
-    if (passedHour < 1) {
-      return '얼마 전'
-    }
-
-    if (passedHour <= 24) {
-      return `${passedHour}시간 전`
-    }
-
-    return dayjs(time).format('YYYY년 MM월 D일 hh시 m분')
-  }
-
-  return (
-    <li key={post.id} className={styles.post}>
+  const Tags = useMemo(
+    () => (
       <ul className={styles.tags}>
         {post.tags?.map((tag) => (
           <li key={tag} className={styles.tag}>
@@ -88,6 +75,46 @@ const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) 
           </li>
         ))}
       </ul>
+    ),
+    [post.tags]
+  )
+
+  const PostOptions = useMemo(
+    () =>
+      post.user.id === currentUser?.uid && (
+        <div className={styles.optionBtn}>
+          <button type='button' onClick={handleOptionClick}>
+            <OptionsIcon />
+          </button>
+          {optionsView && (
+            <ul className={styles.options}>
+              <li>
+                <button type='button' onClick={() => handleEditClick(post.id)}>
+                  수정
+                </button>
+              </li>
+              <li>
+                <button type='button' onClick={() => handleDeleteClick(post.id)}>
+                  삭제
+                </button>
+              </li>
+            </ul>
+          )}
+        </div>
+      ),
+    [currentUser?.uid, handleEditClick, optionsView, post.id, post.user.id]
+  )
+
+  const LikeIcon = useMemo(
+    () => (post.like?.includes(currentUser?.uid || '') ? <LikePressedIcon /> : <LikeUnpressedIcon />),
+    [currentUser?.uid, post.like]
+  )
+
+  if ((filterTags?.length || 0) > 0 && filterTags?.filter((x) => post.tags?.includes(x)).length === 0) return null
+
+  return (
+    <li key={post.id} className={styles.post}>
+      {Tags}
       <div className={styles.metaInfo}>
         <div className={styles.writer}>
           <img src={post.user.profileImg || noimage} alt='' />
@@ -99,27 +126,7 @@ const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) 
             </div>
           </div>
         </div>
-        {post.user.id === currentUser?.uid && (
-          <div className={styles.optionBtn}>
-            <button type='button' onClick={handleOptionClick}>
-              <OptionsIcon />
-            </button>
-            {optionsView && (
-              <ul className={styles.options}>
-                <li>
-                  <button type='button' onClick={() => handleEditClick(post.id)}>
-                    수정
-                  </button>
-                </li>
-                <li>
-                  <button type='button' onClick={() => handleDeleteClick(post.id)}>
-                    삭제
-                  </button>
-                </li>
-              </ul>
-            )}
-          </div>
-        )}
+        {PostOptions}
       </div>
       <div className={styles.content}>
         <p className={styles.contentText}>{post.content.text}</p>
@@ -127,7 +134,7 @@ const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) 
       </div>
       <div className={styles.postFooter}>
         <button type='button' onClick={() => handleLikeToggle(post.id)}>
-          {post.like?.includes(currentUser?.uid || '') ? <LikePressedIcon /> : <LikeUnpressedIcon />}
+          {LikeIcon}
         </button>
         <div>{post.like?.length || 0}</div>
         <button type='button' onClick={handleCommentsClick}>
