@@ -1,14 +1,14 @@
-import { GithubAuthProvider, GoogleAuthProvider, signInWithRedirect, signOut, updateProfile, User } from 'firebase/auth'
+import { GithubAuthProvider, GoogleAuthProvider, signInWithPopup, signOut, updateProfile, User } from 'firebase/auth'
 import { auth } from './myFirebase'
 
 export const logInWithOAuth = async (providerName: string) => {
   if (providerName === 'google') {
-    await signInWithRedirect(auth, new GoogleAuthProvider())
+    await signInWithPopup(auth, new GoogleAuthProvider())
     return
   }
 
   if (providerName === 'github') {
-    await signInWithRedirect(auth, new GithubAuthProvider())
+    await signInWithPopup(auth, new GithubAuthProvider())
   }
 }
 

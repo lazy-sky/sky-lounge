@@ -25,7 +25,7 @@ const PostItem = ({ post, filterTags }: { post: IPost; filterTags?: string[] }) 
   const handleLikeToggle = async (postId: string) => {
     if (!isLoggedIn) {
       Swal.fire('로그인이 필요합니다.')
-      navigate('/signin')
+      navigate('signin')
       return
     }
 

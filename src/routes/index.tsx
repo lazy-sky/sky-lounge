@@ -36,7 +36,7 @@ const App = () => {
           <Route path='/' element={<Home />} />
           <Route path='signin' element={<SignIn />} />
           <Route
-            path='/write/*'
+            path='write/*'
             element={
               <PrivateRoute>
                 <CreatePost />
@@ -44,7 +44,7 @@ const App = () => {
             }
           />
           <Route
-            path='/mypage'
+            path='mypage'
             element={
               <PrivateRoute>
                 <MyPage />

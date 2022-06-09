@@ -30,7 +30,6 @@ const MyPage = () => {
   const [commentsView, setCommentsView] = useState(false)
 
   useMount(() => {
-    localStorage.removeItem('isLoginLoading')
     setNewDisplayname(currentUser?.displayName || '')
     setMyDataInRealTime('posts', setMyPosts, currentUser!.uid)
     setMyDataInRealTime('comments', setMyComments, currentUser!.uid)
