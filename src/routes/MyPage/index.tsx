@@ -8,8 +8,9 @@ import Swal from 'sweetalert2'
 import cx from 'classnames'
 
 import { auth } from 'services/myFirebase'
-import { IComment, IPost } from 'types/post'
+import { logOut, updateNickname } from 'services/auth'
 import { setMyDataInRealTime } from 'services/data'
+import { IComment, IPost } from 'types/post'
 import { currentUserState, isLoggedInState } from 'store/atom'
 import { getRandomNickname } from '../../utils'
 import PageHeader from 'components/_shared/PageHeader'
@@ -17,7 +18,6 @@ import PostList from 'components/PostList'
 import CommentList from 'components/CommentList'
 
 import styles from './myPage.module.scss'
-import { logOut, updateNickname } from 'services/auth'
 
 const MyPage = () => {
   const navigate = useNavigate()
@@ -30,6 +30,7 @@ const MyPage = () => {
   const [commentsView, setCommentsView] = useState(false)
 
   useMount(() => {
+    localStorage.removeItem('isLoginLoading')
     setNewDisplayname(currentUser?.displayName || '')
     setMyDataInRealTime('posts', setMyPosts, currentUser!.uid)
     setMyDataInRealTime('comments', setMyComments, currentUser!.uid)
