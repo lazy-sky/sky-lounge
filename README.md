@@ -24,7 +24,6 @@
  ┃ ┃ ┗ 📂PageHeader
  ┃ ┃ ┃ ┣ 📂BackButton
  ┣ 📂routes
- ┃ ┣ 📂ChatRoom
  ┃ ┣ 📂CreatePost
  ┃ ┃ ┣ 📂SubmitButton
  ┃ ┣ 📂Home
@@ -66,11 +65,6 @@
 
 - 댓글 열람
 - 댓글 작성(회원)
-
-- 익명 채팅 참여
-  - 게스트 계정 자동 생성
-  - 사진 및 이모티콘 첨부
-  - 메세지 리액션
 
 - 회원가입 및 로그인
   - 로그인, 로그아웃, 회원 탈퇴
@@ -138,16 +132,6 @@
 
 ![post-edit](https://user-images.githubusercontent.com/47808461/172036236-6ce2ad9b-f0d1-478d-a392-99e024a8c094.gif)
 
-### 익명 채팅방
-
-모든 사용자는 채팅방 탭에서 익명으로 메세지를 남길 수 있습니다.
-- 메세지 작성
-- 메세지 반응
-- 사진 첨부
-- 이모티콘
-
-![chat](https://user-images.githubusercontent.com/47808461/172036372-7be83599-4526-4c6c-90e6-f649c5c5be09.gif)
-
 ### 회원가입 및 로그인
 
 게시글 작성, 댓글 작성, 좋아요 요청, 마이 페이지 접근을 시도하면 사용자에게 로그인이 필요함을 알리고, 로그인 페이지로 이동시킵니다. 해당 페이지에서 구글 및 깃허브 계정을 통해 로그인할 수 있습니다. 
@@ -206,9 +190,6 @@
 - eslint
 - prettier
 - stylelint
-
-기타
-- stream-chat/stream-chat-react: 채팅 관련 API
 
 ## Contributor
 
