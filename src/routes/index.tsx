@@ -10,11 +10,10 @@ import Navigation from 'components/_shared/Navigation'
 import MyPage from './MyPage'
 import CreatePost from './CreatePost'
 import PrivateRoute from './PrivateRoute'
+import SignIn from './SignIn'
 import Home from './Home'
 
 import styles from './routes.module.scss'
-import ChatRoom from './ChatRoom'
-import SignIn from './SignIn'
 
 const App = () => {
   const setIsLoggedIn = useSetRecoilState(isLoggedInState)
@@ -51,7 +50,6 @@ const App = () => {
               </PrivateRoute>
             }
           />
-          <Route path='chat' element={<ChatRoom />} />
         </Routes>
       </div>
       <footer>

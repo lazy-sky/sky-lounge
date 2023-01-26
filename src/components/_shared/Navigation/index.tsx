@@ -1,7 +1,7 @@
 import { Link, useLocation } from 'react-router-dom'
 import cx from 'classnames'
 
-import { ChatIcon, HomeIcon, PencilIcon, UserIcon } from 'assets/svgs'
+import { HomeIcon, PencilIcon, UserIcon } from 'assets/svgs'
 
 import styles from './navigation.module.scss'
 
@@ -24,11 +24,6 @@ const Navigation = () => {
         <li>
           <Link to='write' className={cx(checkIsActive('/write') && styles.active)}>
             <PencilIcon />
-          </Link>
-        </li>
-        <li>
-          <Link to='chat' className={cx(checkIsActive('/chat') && styles.active)}>
-            <ChatIcon />
           </Link>
         </li>
         <li>
